@@ -1,0 +1,384 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,109,73)
+  Text = ("Typoo 0.2.5 BETA")
+  Icon = Picture["accessories-character-map.png"]
+  Border = Window.Fixed
+  Minimized = True
+  { Label6 Label
+    MoveScaled(30,2,28,2)
+    Font = Font["Underline"]
+    Text = ("Please type the text below")
+  }
+  { type_here__ TextBox
+    MoveScaled(30,38,21,4)
+    Text = ("")
+    ReadOnly = True
+  }
+  { board__ TextEdit
+    MoveScaled(29,6,79,37)
+    Font = Font["+5"]
+    ReadOnly = True
+  }
+  { Frame1 Frame
+    MoveScaled(1,0.4286,27,23)
+    Text = (" Next Char ")
+    { info_char__ Label
+      MoveScaled(2,3,23,18)
+      Font = Font["Bold,80"]
+      Text = ("a")
+      Alignment = Align.Center
+    }
+  }
+  { Frame2 Frame
+    MoveScaled(1,23.7143,27,15)
+    Text = (" Speed ")
+    { speed__ Label
+      MoveScaled(2,3,23,8)
+      Font = Font["Bold,36"]
+      Text = ("0")
+      Alignment = Align.Center
+    }
+    { Label1 Label
+      MoveScaled(6,11,15,2)
+      Font = Font["Italic,-1"]
+      AutoResize = True
+      Text = (" Char per minute")
+    }
+  }
+  { Frame3 Frame
+    MoveScaled(1,39,27,12)
+    Text = (" Statistics ")
+    { Label2 Label
+      MoveScaled(2,4.1429,10,2)
+      Text = ("Char(s)")
+    }
+    { Label3 Label
+      MoveScaled(2,7.7143,10,2)
+      Text = ("Error(s)")
+    }
+    { char_count__ TextLabel
+      MoveScaled(14,4,12,3)
+      Text = ("0")
+      Border = Border.Sunken
+    }
+    { char_error__ TextLabel
+      MoveScaled(14,7.4286,12,3)
+      Foreground = &HFF0000&
+      Text = ("0")
+      Border = Border.Sunken
+    }
+    { Label9 Label
+      MoveScaled(11,4.4286,2,2)
+      Text = (":")
+    }
+    { Label10 Label
+      MoveScaled(11,8,2,2)
+      Text = (":")
+    }
+  }
+  { Frame4 Frame
+    MoveScaled(1,51.1429,27,11.4286)
+    Text = (" Timing ")
+    { Label4 Label
+      MoveScaled(1.7143,4,10,2)
+      Text = ("Start")
+    }
+    { start_time__ TextLabel
+      MoveScaled(13.7143,3.4286,12,3)
+      Text = ("00:00:00")
+      Alignment = Align.Center
+      Border = Border.Sunken
+    }
+    { Label5 Label
+      MoveScaled(1.7143,7.1429,10,2)
+      Text = ("Finish")
+    }
+    { stop_time__ TextLabel
+      MoveScaled(13.7143,7,12,3)
+      Text = ("00:00:00")
+      Alignment = Align.Center
+      Border = Border.Sunken
+    }
+    { Label7 Label
+      MoveScaled(10.7143,4,2,2)
+      Text = (":")
+    }
+    { Label8 Label
+      MoveScaled(10.7143,7,2,2)
+      Text = (":")
+    }
+  }
+  { start_type__ ToolButton
+    MoveScaled(6.7143,63,8,8)
+    ToolTip = ("Start typing")
+    Text = ("")
+    Picture = Picture["next.png"]
+  }
+  { stop_type__ ToolButton
+    MoveScaled(14.7143,64,6,6)
+    Enabled = False
+    ToolTip = ("Stop typing")
+    Text = ("")
+    Picture = Picture["stop.png"]
+  }
+  { b1 Button
+    MoveScaled(30,44.1429,5,5)
+    Text = ("~\n`")
+  }
+  { b2 Button
+    MoveScaled(35.4286,44.1429,5,5)
+    Text = ("!\n1")
+  }
+  { b3 Button
+    MoveScaled(40.7143,44.1429,5,5)
+    Text = ("@\n2")
+  }
+  { b4 Button
+    MoveScaled(46.1429,44.1429,5,5)
+    Text = ("#\n3")
+  }
+  { b5 Button
+    MoveScaled(51.7143,44.1429,5,5)
+    Text = ("$\n4")
+  }
+  { b6 Button
+    MoveScaled(57.1429,44.1429,5,5)
+    Text = ("%\n5")
+  }
+  { b7 Button
+    MoveScaled(62.4286,44.1429,5,5)
+    Text = ("^\n6")
+  }
+  { b8 Button
+    MoveScaled(68,44.1429,5,5)
+    Text = ("&&\n7")
+  }
+  { b9 Button
+    MoveScaled(73.4286,44.1429,5,5)
+    Text = ("*\n8")
+  }
+  { b10 Button
+    MoveScaled(78.7143,44.1429,5,5)
+    Text = ("(\n9")
+  }
+  { b11 Button
+    MoveScaled(84.1429,44.1429,5,5)
+    Text = (")\n0")
+  }
+  { b12 Button
+    MoveScaled(89.7143,44.1429,5,5)
+    Text = ("_\n-")
+  }
+  { b13 Button
+    MoveScaled(95.1429,44.1429,5,5)
+    Text = ("+\n=")
+  }
+  { b14 Button
+    MoveScaled(100.4286,44.1429,7,5)
+    Text = ("Bksp")
+  }
+  { b15 Button
+    MoveScaled(29.7143,49.7143,7,5)
+    Text = ("TAB")
+  }
+  { b16 Button
+    MoveScaled(37.1429,49.7143,5,5)
+    Text = ("Q")
+  }
+  { b17 Button
+    MoveScaled(42.7143,49.7143,5,5)
+    Text = ("W")
+  }
+  { b18 Button
+    MoveScaled(48.1429,49.7143,5,5)
+    Text = ("E")
+  }
+  { b19 Button
+    MoveScaled(53.4286,49.7143,5,5)
+    Text = ("R")
+  }
+  { b20 Button
+    MoveScaled(59,49.7143,5,5)
+    Text = ("T")
+  }
+  { b21 Button
+    MoveScaled(64.4286,49.7143,5,5)
+    Text = ("Y")
+  }
+  { b22 Button
+    MoveScaled(69.7143,49.7143,5,5)
+    Text = ("U")
+  }
+  { b23 Button
+    MoveScaled(75.1429,49.7143,5,5)
+    Text = ("I")
+  }
+  { b24 Button
+    MoveScaled(80.7143,49.7143,5,5)
+    Text = ("O")
+  }
+  { b25 Button
+    MoveScaled(86.1429,49.7143,5,5)
+    Text = ("P")
+  }
+  { b26 Button
+    MoveScaled(91.4286,49.7143,5,5)
+    Text = ("{\n[")
+  }
+  { b27 Button
+    MoveScaled(97,49.7143,5,5)
+    Text = ("}\n]")
+  }
+  { b28 Button
+    MoveScaled(102.4286,49.7143,5,5)
+    Text = ("|\n\\")
+  }
+  { b30 Button
+    MoveScaled(39.1429,55.1429,5,5)
+    Text = ("A")
+  }
+  { b31 Button
+    MoveScaled(44.7143,55.1429,5,5)
+    Text = ("S")
+  }
+  { b32 Button
+    MoveScaled(50.1429,55.1429,5,5)
+    Text = ("D")
+  }
+  { b33 Button
+    MoveScaled(55.4286,55.1429,5,5)
+    Text = ("F")
+  }
+  { b34 Button
+    MoveScaled(61,55.1429,5,5)
+    Text = ("G")
+  }
+  { b35 Button
+    MoveScaled(66.4286,55.1429,5,5)
+    Text = ("H")
+  }
+  { b36 Button
+    MoveScaled(71.7143,55.1429,5,5)
+    Text = ("J")
+  }
+  { b37 Button
+    MoveScaled(77.1429,55.1429,5,5)
+    Text = ("K")
+  }
+  { b38 Button
+    MoveScaled(82.7143,55.1429,5,5)
+    Text = ("L")
+  }
+  { b39 Button
+    MoveScaled(88.1429,55.1429,5,5)
+    Text = (":\n;")
+  }
+  { b40 Button
+    MoveScaled(93.4286,55.1429,5,5)
+    Text = ("\"\n'")
+  }
+  { b29 Button
+    MoveScaled(29.7143,55.1429,9,5)
+    Text = ("CAPS")
+  }
+  { b41 Button
+    MoveScaled(99,55.1429,8.4286,5)
+    Text = ("ENTER")
+  }
+  { b43 Button
+    MoveScaled(41.1429,60.7143,5,5)
+    Text = ("Z")
+  }
+  { b44 Button
+    MoveScaled(46.7143,60.7143,5,5)
+    Text = ("X")
+  }
+  { b45 Button
+    MoveScaled(52.1429,60.7143,5,5)
+    Text = ("C")
+  }
+  { b46 Button
+    MoveScaled(57.4286,60.7143,5,5)
+    Text = ("V")
+  }
+  { b47 Button
+    MoveScaled(63,60.7143,5,5)
+    Text = ("B")
+  }
+  { b48 Button
+    MoveScaled(68.4286,60.7143,5,5)
+    Text = ("N")
+  }
+  { b49 Button
+    MoveScaled(73.7143,60.7143,5,5)
+    Text = ("M")
+  }
+  { b50 Button
+    MoveScaled(79.1429,60.7143,5,5)
+    Text = ("<\n,")
+  }
+  { b51 Button
+    MoveScaled(84.7143,60.7143,5,5)
+    Text = (">\n.")
+  }
+  { b52 Button
+    MoveScaled(90.1429,60.7143,5,5)
+    Text = ("?\n/")
+  }
+  { b42 Button
+    MoveScaled(29.7143,60.7143,11,5)
+    Text = ("SHIFT")
+  }
+  { b53 Button
+    MoveScaled(95.4286,60.7143,12,5)
+    Text = ("SHIFT")
+  }
+  { Button54 Button
+    MoveScaled(30,66.4286,5,5)
+    Text = ("CTRL")
+  }
+  { Button55 Button
+    MoveScaled(35.4286,66.4286,5,5)
+    Text = ("")
+    Picture = Picture["icon:/16/linux"]
+  }
+  { Button56 Button
+    MoveScaled(40.7143,66.4286,5,5)
+    Text = ("ALT")
+  }
+  { Button57 Button
+    MoveScaled(91.7143,66.4286,5,5)
+    Text = ("ALT")
+  }
+  { Button58 Button
+    MoveScaled(97.1429,66.4286,5,5)
+    Text = ("")
+    Picture = Picture["icon:/16/linux"]
+  }
+  { Button59 Button
+    MoveScaled(102.4286,66.4286,5,5)
+    Text = ("CTRL")
+  }
+  { b54 Button
+    MoveScaled(46.1429,66.4286,45,5)
+    Text = ("SPACE")
+  }
+  { open_file__ ToolButton
+    MoveScaled(99,1,4,4)
+    ToolTip = ("Open tutorial file")
+    Text = ("")
+    Picture = Picture["fileopen.png"]
+  }
+  { about__ ToolButton
+    MoveScaled(103.4286,1,4,4)
+    ToolTip = ("About")
+    Text = ("")
+    Picture = Picture["help.png"]
+  }
+  { Timer1 #Timer
+    #X = 161
+    #Y = 455
+  }
+}

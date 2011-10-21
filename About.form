@@ -1,0 +1,74 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,49,54)
+  Text = ("About Typoo")
+  Icon = Picture["accessories-character-map.png"]
+  Border = Window.Fixed
+  { Label2 Label
+    MoveScaled(14,6,24,4)
+    Font = Font["Bold,+1"]
+    Text = ("version 0.2.5 BETA")
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(4,2,9,9)
+    Picture = Picture["accessories-character-map.png"]
+  }
+  { Label1 Label
+    MoveScaled(14,3,10,4)
+    Font = Font["+3"]
+    AutoResize = True
+    Text = ("Typoo")
+  }
+  { TabStrip1 TabStrip
+    MoveScaled(1,14,47,33)
+    Count = 3
+    Index = 0
+    Text = ("About")
+    { Label3 Label
+      MoveScaled(3,7,40,4)
+      Font = Font["+1"]
+      Text = ("Small software to learn fast typing")
+    }
+    { Label4 Label
+      MoveScaled(3,13,40,4)
+      Font = Font["+1"]
+      Text = ("Copyright (C) 2011 Kusuma Negara")
+    }
+    { Label5 Label
+      MoveScaled(3,16,40,4)
+      Font = Font["+1"]
+      Text = ("License : GNU General Public License v.2")
+    }
+    Index = 1
+    Text = ("Developer")
+    { Label6 Label
+      MoveScaled(2,4,40,4)
+      Font = Font["Bold,+1"]
+      Text = ("Kusuma Negara")
+    }
+    { Label7 Label
+      MoveScaled(2,7.1429,40,4)
+      Font = Font["Italic,+1"]
+      Text = ("Programmer and Maintainer")
+    }
+    { mail_me ToolButton
+      MoveScaled(1,11,5,4)
+      ToolTip = ("Mail me")
+      Text = ("")
+      Picture = Picture["mail_generic.png"]
+    }
+    Index = 2
+    Text = ("Thank's to")
+    { Label8 Label
+      MoveScaled(3,4,40,12)
+      Font = Font["Bold,+1"]
+      Text = ("ArzonLinus\nFahrudin Hamzah\n\nUbuntu-Indonesia.com community")
+    }
+    Index = 0
+  }
+  { close__ Button
+    MoveScaled(36,48,11,3.4286)
+    Text = ("Close")
+  }
+}
