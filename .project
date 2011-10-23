@@ -3,14 +3,14 @@
 Title=Typoo
 Startup=FMain
 Icon=accessories-character-map.png
-Version=0.2.9
+Version=0.2.8
 Library=gb.qt
 Library=gb.form
 Library=gb.desktop
 Library=gb.qt.ext
 Library=gb.vb
 Description=Small Program to learn fast typing
-Authors=Kusuma Negara <deny.krishna108@gmail.com>\nFahrudin Hamzah
+Authors=Kusuma Negara <deny.krishna108@gmail.com>\nHamzah Fahrudin <karangdesaku@yahoo.co.id>
 TabSize=2
 Maintainer=Kusuma Negara
 Address=deny.krishna108@gmail.com

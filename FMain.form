@@ -1,13 +1,13 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,106,72)
+  MoveScaled(0,0,106,75)
   Text = ("Typoo 0.2.8 BETA")
   Icon = Picture["accessories-character-map.png"]
   Border = Window.Fixed
   Minimized = True
   { PictureBox1 PictureBox
-    MoveScaled(0,-1,106,75)
+    MoveScaled(0,-1,106,76)
     Font = Font["DejaVu Sans"]
     Picture = Picture["image/jendela.png"]
     Stretch = True
@@ -548,5 +548,18 @@
     Font = Font["Droid Sans,Bold,+1"]
     Background = &HCCCCCC&
     Text = (":: Next Char ::")
+  }
+  { lb_caps_indicator__ Label
+    MoveScaled(92.8571,71.2857,12,2)
+    Visible = False
+    Font = Font["Droid Sans,Bold,-1"]
+    Background = &HE7E7E7&
+    Foreground = &HC00000&
+    Text = ("Caps Lock ON")
+  }
+  { pict_caps_indicator__ PictureBox
+    MoveScaled(89.8571,71,2.8571,2.8571)
+    Visible = False
+    Picture = Picture["image/caps-indicator.png"]
   }
 }

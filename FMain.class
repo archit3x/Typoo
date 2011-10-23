@@ -6,7 +6,7 @@
 ' saya yang ada di Windows (opensource juga) yaitu Tiny Typing Tutor
 ' 
 ' Programmer : Kusuma Negara <deny.krishna108@gmail.com>
-' Artwork Designer : Fahrudin Hamzah
+' Artwork Designer : Hamzah Fahrudin <karangdesaku@yahoo.co.id>
 ' Lisensi : GPL GNU General Public License Version 3
 ' Site : http://ubuntu-indonesia.com
 ' Blog : http://iptek108.blogspot.com
@@ -81,6 +81,17 @@ PUBLIC SUB detect_capslock()
   
 END
 
+PUBLIC SUB caps_indicator(show_indicator AS Boolean)
+  IF show_indicator = TRUE THEN 
+    pict_caps_indicator__.Visible = TRUE
+    lb_caps_indicator__.Visible = TRUE
+  ELSE 
+    pict_caps_indicator__.Visible = FALSE
+    lb_caps_indicator__.Visible = FALSE
+  ENDIF 
+END
+
+
 PUBLIC SUB type_here___KeyPress()
 
   'Case sensitive key code still not supported by Gambas
@@ -88,6 +99,14 @@ PUBLIC SUB type_here___KeyPress()
   IF __start_type = FALSE THEN 
     Message.Info("Please click start to begin typing")
     RETURN 
+  ENDIF 
+  
+  'detect caps lock
+  detect_capslock
+  IF __is_capslock_on = TRUE THEN 
+    caps_indicator(TRUE)
+  ELSE 
+    caps_indicator(FALSE)
   ENDIF 
   
   __char = Mid(__text, __pos, 1)
@@ -113,7 +132,12 @@ PUBLIC SUB type_here___KeyPress()
     ENDIF 
   ELSE IF Asc(__char) >= 65 AND Asc(__char) <= 90 THEN ' huruf A - Z
     IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = TRUE
+      detect_capslock
+      IF __is_capslock_on = FALSE THEN
+        __correct_typing = TRUE
+      ELSE 
+        __correct_typing = FALSE
+      ENDIF 
     ELSE
       detect_capslock
       IF __is_capslock_on = TRUE THEN
