@@ -2,7 +2,7 @@
 
 { Form Form
   MoveScaled(0,0,106,72)
-  Text = ("Typoo 0.2.7 BETA")
+  Text = ("Typoo 0.2.8 BETA")
   Icon = Picture["accessories-character-map.png"]
   Border = Window.Fixed
   Minimized = True

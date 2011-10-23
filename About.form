@@ -8,7 +8,7 @@
   { Label2 Label
     MoveScaled(14,6,24,4)
     Font = Font["Bold,+1"]
-    Text = ("version 0.2.7 BETA")
+    Text = ("version 0.2.8 BETA")
   }
   { PictureBox1 PictureBox
     MoveScaled(4,2,9,9)

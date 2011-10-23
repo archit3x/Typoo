@@ -13,8 +13,8 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="FMain.class:177.41"
-Active=2
+Active=1
+File[2]="FMain.class:2.19"
 File[3]="About.form"
 File[4]="About.class:17.62"
 Count=4
