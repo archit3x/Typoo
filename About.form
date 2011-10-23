@@ -8,7 +8,7 @@
   { Label2 Label
     MoveScaled(14,6,24,4)
     Font = Font["Bold,+1"]
-    Text = ("version 0.2.5 BETA")
+    Text = ("version 0.2.7 BETA")
   }
   { PictureBox1 PictureBox
     MoveScaled(4,2,9,9)
@@ -33,27 +33,43 @@
     { Label4 Label
       MoveScaled(3,13,40,4)
       Font = Font["+1"]
-      Text = ("Copyright (C) 2011 Kusuma Negara")
+      Text = ("Copyright (C) 2011 Typoo Developer")
     }
     { Label5 Label
       MoveScaled(3,16,40,4)
       Font = Font["+1"]
-      Text = ("License : GNU General Public License v.2")
+      Text = ("License : GNU General Public License v.3")
     }
     Index = 1
     Text = ("Developer")
     { Label6 Label
-      MoveScaled(2,4,40,4)
+      MoveScaled(7,4,22,4)
       Font = Font["Bold,+1"]
       Text = ("Kusuma Negara")
     }
     { Label7 Label
-      MoveScaled(2,7.1429,40,4)
+      MoveScaled(3,7,40,4)
       Font = Font["Italic,+1"]
       Text = ("Programmer and Maintainer")
     }
     { mail_me ToolButton
-      MoveScaled(1,11,5,4)
+      MoveScaled(2,4,5,4)
+      ToolTip = ("Mail me")
+      Text = ("")
+      Picture = Picture["mail_generic.png"]
+    }
+    { Label9 Label
+      MoveScaled(7,14,21,4)
+      Font = Font["Bold,+1"]
+      Text = ("Fahrudin Hamzah")
+    }
+    { Label10 Label
+      MoveScaled(3,17,40,4)
+      Font = Font["Italic,+1"]
+      Text = ("Artwork Designer")
+    }
+    { mail_me2 ToolButton
+      MoveScaled(2,14,5,4)
       ToolTip = ("Mail me")
       Text = ("")
       Picture = Picture["mail_generic.png"]
@@ -61,9 +77,9 @@
     Index = 2
     Text = ("Thank's to")
     { Label8 Label
-      MoveScaled(3,4,40,12)
+      MoveScaled(3,4,40,7)
       Font = Font["Bold,+1"]
-      Text = ("ArzonLinus\nFahrudin Hamzah\n\nUbuntu-Indonesia.com community")
+      Text = ("ArzonLinus\nUbuntu-Indonesia.com community")
     }
     Index = 0
   }

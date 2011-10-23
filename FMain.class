@@ -5,8 +5,9 @@
 ' Program ini hasil porting yang belum sempurna dari program
 ' saya yang ada di Windows (opensource juga) yaitu Tiny Typing Tutor
 ' 
-' Author : Kusuma Negara <deny.krishna108@gmail.com>
-' Lisensi : GPL GNU General Public License Version 2
+' Programmer : Kusuma Negara <deny.krishna108@gmail.com>
+' Artwork Designer : Fahrudin Hamzah
+' Lisensi : GPL GNU General Public License Version 3
 ' Site : http://ubuntu-indonesia.com
 ' Blog : http://iptek108.blogspot.com
 ' 
@@ -55,7 +56,7 @@ PUBLIC SUB open_file___Click()
   IF Dialog.OpenFile(FALSE) THEN RETURN
   __text = Trim((File.Load(Dialog.Path)))
   board__.Text = __text
-  char_count__.Text = Len(__text)
+  char_count__.Text = Format(Len(__text), "#,##")
 
 END
 
@@ -90,7 +91,7 @@ PUBLIC SUB type_here___KeyPress()
   ENDIF 
   
   __char = Mid(__text, __pos, 1)
-  
+
   ' IF Key.Code = Key[__char] THEN 
   '   __correct_typing = TRUE
   ' ELSE 
@@ -161,11 +162,25 @@ PUBLIC SUB type_here___KeyPress()
 
 skip_test:
   IF __correct_typing = TRUE THEN
-    board__.Select(__pos, 1)
-    board__.Format.Color = Color.Blue
+  
+    IF __pos <= Len(__text)
+      board__.Select(__pos, 1)
+      board__.Format.Color = Color.Blue '&FFFF00&
+      board__.Format.Font.Underline = TRUE
+      board__.Unselect
+    ENDIF 
+      board__.Select(__pos - 1, 1)
+    IF __stop_type = FALSE THEN 
+      board__.Format.Color = &FF6600&
+    ELSE 
+      board__.Format.Color = Color.Gray
+    ENDIF 
+    board__.Format.Font.Underline = FALSE
+    board__.Unselect
+    'FFFF00
     __pos = __pos + 1
     __type_count = __type_count + 1
-    info_char__.Foreground = Color.Black
+    info_char__.Foreground = &HFFFF00&
    __stop_type = FALSE
   ELSE
     IF Key.Code = 4128 THEN  'key shift
@@ -181,11 +196,14 @@ skip_test:
     ENDIF
     __pos = __pos
     __stop_type = TRUE
-    char_error__.Text = __error
+    char_error__.Text = Format(__error, "#,##")
     info_char__.Foreground = Color.Red
-    board__.Format.Color = Color.Red
-  ENDIF
-  
+    'board__.Format.Color = Color.Red
+    board__.Select(__pos - 1, 1)
+    board__.Format.Color = Color.Red '&FFFF00&
+    board__.Format.Font.Underline = TRUE
+    board__.Unselect    
+  ENDIF 
   IF __pos <= Len(__text) THEN 
     info_char__.Text = Mid(__text, __pos, 1)
     map_virtual_keyboard(info_char__.Caption)
@@ -702,14 +720,15 @@ PUBLIC SUB start_type___Click()
     board__.Refresh
     board__.Select(__pos - 1, 1)
     board__.Format.Color = Color.Blue
+    board__.Format.Font.Underline = TRUE
+    board__.Unselect
     type_here__.SetFocus
     
     __char = Mid(__text, __pos, 1)
 
     char_error__.Caption = "0"
     info_char__.Caption = __char
-    info_char__.ForeColor = Color.Default
-    char_count__.Caption = Len(__text)
+    info_char__.ForeColor = &HFFFF00&
     start_time__.Caption = Format(Time(Now), "hh:nn:ss")
     __start_time = Time(Now)
     stop_time__.Caption = "00:00:00"
@@ -742,13 +761,6 @@ PUBLIC SUB calculate_speed()
   speed = __type_count / (__time / 60)
   speed__.Caption = speed
   
-END
-
-
-PUBLIC SUB board___KeyPress()
-
-  Message(Key.Meta)
-
 END
 
 PUBLIC SUB board___GotFocus()
