@@ -1,0 +1,31 @@
+' Gambas class file
+
+
+PUBLIC SUB Form_Open()
+  ME.Center
+END
+
+PUBLIC SUB close___Click()
+
+  ME.Close
+
+END
+
+PUBLIC SUB mail_me_Click()
+
+  Desktop.SendMail(["deny.krishna108@gmail.com"],,, "[Typoo]")
+
+END
+
+PUBLIC SUB mail_me2_Click()
+
+  Desktop.SendMail(["karangdesaku@yahoo.co.id"],,, "[Typoo]")
+
+END
+
+PUBLIC SUB mail_me3_Click()
+
+  Desktop.SendMail(["tldm217@gmail.com"],,, "[Typoo]")
+
+END
+

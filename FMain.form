@@ -1,0 +1,837 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,101.7143,80)
+  Background = &HE5E5E5&
+  Text = ("Typoo 0.3 BETA")
+  Icon = Picture["typoo-icon.png"]
+  Border = Window.Fixed
+  Minimized = True
+  { mn_file Menu
+    Text = ("File")
+    { mn_open Menu
+      Text = ("Open tutorial file...")
+      Picture = Picture["image/document-open.png"]
+    }
+    { mn_sp1 Menu
+      Text = ("")
+    }
+    { mn_exit Menu
+      Text = ("Exit")
+      Picture = Picture["image/gtk-no.png"]
+    }
+  }
+  { mn_help Menu
+    Text = ("Help")
+    { mn_about Menu
+      Text = ("About")
+      Picture = Picture["image/help-about.png"]
+    }
+    { mn_tutorial Menu
+      Text = ("Tutorial")
+      Picture = Picture["image/help-contents.png"]
+    }
+  }
+  { PictureBox9 PictureBox
+    MoveScaled(33,51,60,26)
+    Picture = Picture["image/tangan.png"]
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(1,75,25,8)
+    Font = Font["DejaVu Sans"]
+    Picture = Picture["image/jendela.png"]
+    Stretch = True
+  }
+  { PictureBox8 PictureBox
+    MoveScaled(1.7143,49.2857,22.5714,3.5714)
+    Picture = Picture["image/kepala-kesalahan.png"]
+  }
+  { PictureBox10 PictureBox
+    MoveScaled(1.7143,52.8571,22.5714,5.7143)
+    Picture = Picture["image/badan-kesalahan.png"]
+  }
+  { PictureBox13 PictureBox
+    MoveScaled(1.7143,56.4286,22.5714,5.7143)
+    Picture = Picture["image/badan-kesalahan.png"]
+  }
+  { type_here__ TextBox
+    MoveScaled(28,19,21,4)
+    Text = ("")
+    ReadOnly = True
+  }
+  { start_type__ ToolButton
+    MoveScaled(5,65,7.7143,7.7143)
+    Background = &HDADADA&
+    ToolTip = ("Start typing")
+    Text = ("")
+    Picture = Picture["image/tombol-mulai.png"]
+  }
+  { stop_type__ ToolButton
+    MoveScaled(13,65,7.7143,7.7143)
+    Enabled = False
+    Background = &HDADADA&
+    ToolTip = ("Stop typing")
+    Text = ("")
+    Picture = Picture["image/tombol-berhenti.png"]
+  }
+  { b1 Button
+    MoveScaled(28,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("~\n`")
+  }
+  { b2 Button
+    MoveScaled(33,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("!\n1")
+  }
+  { b3 Button
+    MoveScaled(38,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("@\n2")
+  }
+  { b4 Button
+    MoveScaled(43,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("#\n3")
+  }
+  { b5 Button
+    MoveScaled(48,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("$\n4")
+  }
+  { b6 Button
+    MoveScaled(53,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("%\n5")
+  }
+  { b7 Button
+    MoveScaled(58,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("^\n6")
+  }
+  { b8 Button
+    MoveScaled(63,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("&&\n7")
+  }
+  { b9 Button
+    MoveScaled(68,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("*\n8")
+  }
+  { b10 Button
+    MoveScaled(73,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("(\n9")
+  }
+  { b11 Button
+    MoveScaled(78,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = (")\n0")
+  }
+  { b12 Button
+    MoveScaled(83,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("_\n-")
+  }
+  { b13 Button
+    MoveScaled(88,27,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("+\n=")
+  }
+  { b14 Button
+    MoveScaled(93,27,6.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("Bksp")
+  }
+  { b15 Button
+    MoveScaled(28,32,6.1429,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("TAB")
+  }
+  { b16 Button
+    MoveScaled(35,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("Q")
+  }
+  { b17 Button
+    MoveScaled(40,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("W")
+  }
+  { b18 Button
+    MoveScaled(45,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("E")
+  }
+  { b19 Button
+    MoveScaled(50,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("R")
+  }
+  { b20 Button
+    MoveScaled(55,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("T")
+  }
+  { b21 Button
+    MoveScaled(60,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("Y")
+  }
+  { b22 Button
+    MoveScaled(65,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("U")
+  }
+  { b23 Button
+    MoveScaled(70,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("I")
+  }
+  { b24 Button
+    MoveScaled(75,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("O")
+  }
+  { b25 Button
+    MoveScaled(80,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("P")
+  }
+  { b26 Button
+    MoveScaled(85,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("{\n[")
+  }
+  { b27 Button
+    MoveScaled(90,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("}\n]")
+  }
+  { b28 Button
+    MoveScaled(95,32,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("|\n\\")
+  }
+  { b30 Button
+    MoveScaled(37,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("A")
+  }
+  { b31 Button
+    MoveScaled(42,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("S")
+  }
+  { b32 Button
+    MoveScaled(47,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("D")
+  }
+  { b33 Button
+    MoveScaled(52,37,4.2857,4.2857)
+    Font = Font["Bold,+2"]
+    Background = &HFFFFFF&
+    Text = ("F")
+  }
+  { b34 Button
+    MoveScaled(57,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("G")
+  }
+  { b35 Button
+    MoveScaled(62,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("H")
+  }
+  { b36 Button
+    MoveScaled(67,37,4.2857,4.2857)
+    Font = Font["Bold,+2"]
+    Background = &HFFFFFF&
+    Text = ("J")
+  }
+  { b37 Button
+    MoveScaled(72,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("K")
+  }
+  { b38 Button
+    MoveScaled(77,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("L")
+  }
+  { b39 Button
+    MoveScaled(82,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = (":\n;")
+  }
+  { b40 Button
+    MoveScaled(87,37,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("\"\n'")
+  }
+  { b29 Button
+    MoveScaled(28,37,8.1429,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("CAPS")
+  }
+  { b41 Button
+    MoveScaled(92,37,7.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("ENTER")
+  }
+  { b43 Button
+    MoveScaled(39,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("Z")
+  }
+  { b44 Button
+    MoveScaled(44,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("X")
+  }
+  { b45 Button
+    MoveScaled(49,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("C")
+  }
+  { b46 Button
+    MoveScaled(54,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("V")
+  }
+  { b47 Button
+    MoveScaled(59,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("B")
+  }
+  { b48 Button
+    MoveScaled(64,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("N")
+  }
+  { b49 Button
+    MoveScaled(69,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("M")
+  }
+  { b50 Button
+    MoveScaled(74,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("<\n,")
+  }
+  { b51 Button
+    MoveScaled(79,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = (">\n.")
+  }
+  { b52 Button
+    MoveScaled(84,42,4.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("?\n/")
+  }
+  { b42 Button
+    MoveScaled(28,42,10.1429,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("SHIFT")
+  }
+  { b53 Button
+    MoveScaled(89,42,10.2857,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("SHIFT")
+  }
+  { Button54 Button
+    MoveScaled(28,47,5,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("CTRL")
+  }
+  { Button55 Button
+    MoveScaled(34,47,5,4.2857)
+    Background = &HFFFFFF&
+    Text = ("")
+    Picture = Picture["icon:/16/linux"]
+  }
+  { Button58 Button
+    MoveScaled(88,47,5,4.2857)
+    Background = &HFFFFFF&
+    Text = ("")
+    Picture = Picture["icon:/16/linux"]
+  }
+  { Button59 Button
+    MoveScaled(94,47,5,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("CTRL")
+  }
+  { Timer1 #Timer
+    #X = 182
+    #Y = 441
+  }
+  { PictureBox4 PictureBox
+    MoveScaled(1.7143,26.2857,22.5714,3.5714)
+    Picture = Picture["image/kepala-kesalahan.png"]
+  }
+  { PictureBox5 PictureBox
+    MoveScaled(1.7143,29.7143,22.5714,5.7143)
+    Picture = Picture["image/badan-kesalahan.png"]
+    Stretch = True
+  }
+  { Label12 Label
+    MoveScaled(3,27,20,2)
+    Font = Font["Droid Sans,Bold,+1"]
+    Background = &HCCCCCC&
+    Text = ("Statistics")
+    Alignment = Align.Center
+  }
+  { PictureBox7 PictureBox
+    MoveScaled(1.7143,33.2857,22.5714,5.7143)
+    Picture = Picture["image/badan-kesalahan.png"]
+  }
+  { char_count__ TextLabel
+    MoveScaled(11.2857,31,12.2857,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    ToolTip = ("Characters count")
+    Text = ("0")
+    Alignment = Align.Left
+  }
+  { char_error__ TextLabel
+    MoveScaled(11.2857,34.1429,12.2857,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFF3F3F&
+    ToolTip = ("Errors typing count")
+    Text = ("0")
+    Alignment = Align.Left
+  }
+  { Label2 Label
+    MoveScaled(3,50,20,2)
+    Font = Font["Droid Sans,Bold,+1"]
+    Background = &HCCCCCC&
+    Text = ("Speed")
+    Alignment = Align.Center
+  }
+  { PictureBox11 PictureBox
+    MoveScaled(26,1.2857,74,24)
+    Picture = Picture["image/isi-teks.png"]
+    Stretch = True
+  }
+  { board__ TextEdit
+    MoveScaled(27,2,72,18)
+    Font = Font["+4"]
+    Background = &HFFFFFF&
+    ReadOnly = True
+    Border = False
+  }
+  { char_count__2 TextLabel
+    MoveScaled(3.1429,30.7143,8,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HB0B0B0&
+    Text = ("Char(s)")
+    Alignment = Align.Left
+  }
+  { char_error__2 TextLabel
+    MoveScaled(3.1429,33.8571,8,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HB0B0B0&
+    Text = ("Error(s)")
+    Alignment = Align.Left
+  }
+  { PictureBox6 PictureBox
+    MoveScaled(1.7143,37.2857,22.5714,5.7143)
+    Picture = Picture["image/badan-kesalahan.png"]
+  }
+  { PictureBox12 PictureBox
+    MoveScaled(1.7143,41.7143,22.5714,5.7143)
+    Picture = Picture["image/badan-kesalahan.png"]
+  }
+  { start_time__ TextLabel
+    MoveScaled(13.2857,40.8571,9,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    Text = ("00:00:00")
+    Alignment = Align.Left
+  }
+  { stop_time__ TextLabel
+    MoveScaled(13.2857,43.5714,9,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    Text = ("00:00:00")
+    Alignment = Align.Left
+  }
+  { char_error__3 TextLabel
+    MoveScaled(3.1429,40.7143,9,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HB0B0B0&
+    Text = ("Start time")
+    Alignment = Align.Left
+  }
+  { char_error__4 TextLabel
+    MoveScaled(3.1429,43.2857,9,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HB0B0B0&
+    Text = ("End time")
+    Alignment = Align.Left
+  }
+  { char_error__5 TextLabel
+    MoveScaled(7,58.5714,12,3)
+    Font = Font["Droid Sans,Italic,-1"]
+    Background = &H1A1A1A&
+    Foreground = &HB0B0B0&
+    Text = ("Char per minute")
+    Alignment = Align.Left
+  }
+  { speed__ Label
+    MoveScaled(3,53.4286,20,6)
+    Font = Font["Droid Sans,Bold,28"]
+    Background = &H1A1A1A&
+    Foreground = &HFF6600&
+    ToolTip = ("Your typing speed")
+    Text = ("0")
+    Alignment = Align.Center
+  }
+  { char_count__3 TextLabel
+    MoveScaled(9.5714,30.8571,1,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    Text = (":")
+    Alignment = Align.Left
+  }
+  { char_count__5 TextLabel
+    MoveScaled(9.5714,34,1,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    Text = (":")
+    Alignment = Align.Left
+  }
+  { PictureBox3 PictureBox
+    MoveScaled(1.7143,1.7143,22.5714,5)
+    Picture = Picture["image/kepala-huruf-selanjutnya.png"]
+  }
+  { PictureBox2 PictureBox
+    MoveScaled(1.7143,5.7143,23,19)
+    Picture = Picture["image/badan-huruf-selanjutnya.png"]
+  }
+  { info_char__ Label
+    MoveScaled(3.7143,5.7143,19,18)
+    Font = Font["Droid Sans,Bold,80"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFF00&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+  }
+  { Label11 Label
+    MoveScaled(7.5714,2.7143,12,2)
+    Font = Font["Droid Sans,Bold,+1"]
+    Background = &HCCCCCC&
+    Text = ("Next Letter")
+  }
+  { Separator1 Separator
+    MoveScaled(27,20,72,1)
+    Background = &HFFFFFF&
+  }
+  { char_count__4 TextLabel
+    MoveScaled(11.7143,43.4286,1,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    Text = (":")
+    Alignment = Align.Left
+  }
+  { char_count__6 TextLabel
+    MoveScaled(11.7143,40.8571,1,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    Text = (":")
+    Alignment = Align.Left
+  }
+  { Separator2 Separator
+    MoveScaled(2.4286,40,21,1)
+    Background = &H1A1A1A&
+  }
+  { char_error__7 TextLabel
+    MoveScaled(3.1429,36.8571,8,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HB0B0B0&
+    Text = ("Accuracy :")
+    Alignment = Align.Left
+  }
+  { char_accuracy__ TextLabel
+    MoveScaled(12,36.8571,10,3)
+    Font = Font["Droid Sans"]
+    Background = &H1A1A1A&
+    Foreground = &HFFFFFF&
+    ToolTip = ("Characters count")
+    Text = ("0 %")
+    Alignment = Align.Left
+  }
+  { pict_caps_indicator__ PictureBox
+    MoveScaled(82.2857,21.4286,2.8571,2.8571)
+    Visible = False
+    Background = &HFFFFFF&
+    Picture = Picture["image/media-record.png"]
+  }
+  { lb_caps_indicator__ Label
+    MoveScaled(85.1429,21.5714,12,2)
+    Visible = False
+    Font = Font["Droid Sans,Bold,-1"]
+    Background = &HFFFFFF&
+    Foreground = &HC00000&
+    Text = ("Caps Lock ON")
+  }
+  { prev_tutor__ Button
+    MoveScaled(27.7143,21.1429,3,3)
+    Enabled = False
+    Background = &HFFFFFF&
+    ToolTip = ("Previous Tutorial")
+    Text = ("")
+    Picture = Picture["image/go-previous.png"]
+  }
+  { next_tutor__ Button
+    MoveScaled(31.1429,21.1429,3,3)
+    Enabled = False
+    Background = &HFFFFFF&
+    ToolTip = ("Next Tutorial")
+    Text = ("")
+    Picture = Picture["image/go-next.png"]
+  }
+  { typoo_mode__ ComboBox
+    MoveScaled(35,21.1429,15,3)
+    Font = Font["Droid Sans"]
+    Background = &HFFFFFF&
+    ReadOnly = True
+    Text = ("ComboBox1")
+  }
+  { j1__ PictureBox
+    MoveScaled(64,64.5714,7.7143,13)
+    Visible = False
+    Picture = Picture["image/jempol-kanan.png"]
+  }
+  { j6__ PictureBox
+    MoveScaled(54,64.5714,7,15)
+    Visible = False
+    Picture = Picture["image/jempol-kiri.png"]
+  }
+  { j2__ PictureBox
+    MoveScaled(71.5714,53,6,20)
+    Visible = False
+    Picture = Picture["image/telunjuk-kanan.png"]
+  }
+  { j4__ PictureBox
+    MoveScaled(81.1429,53.7143,6,16)
+    Visible = False
+    Picture = Picture["image/manis-kanan.png"]
+  }
+  { j3__ PictureBox
+    MoveScaled(77.2857,51.1429,6,17)
+    Visible = False
+    Picture = Picture["image/tengah-kanan.png"]
+  }
+  { j5__ PictureBox
+    MoveScaled(86,60.4286,6,15)
+    Visible = False
+    Picture = Picture["image/kelingking-kanan.png"]
+  }
+  { j7__ PictureBox
+    MoveScaled(48,53,5,20)
+    Visible = False
+    Picture = Picture["image/telunjuk-kiri.png"]
+  }
+  { j10__ PictureBox
+    MoveScaled(33.4286,59.5714,8,15)
+    Visible = False
+    Picture = Picture["image/kelingking-kiri.png"]
+  }
+  { Button56 Button
+    MoveScaled(40,47,5,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("ALT")
+  }
+  { b54 Button
+    MoveScaled(46,47,35,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("SPACE")
+  }
+  { Button57 Button
+    MoveScaled(82,47,5,4.2857)
+    Font = Font["Droid Sans,-1"]
+    Background = &HFFFFFF&
+    Text = ("ALT")
+  }
+  { j8__ PictureBox
+    MoveScaled(42,51.4286,6,18)
+    Visible = False
+    Picture = Picture["image/tengah-kiri.png"]
+  }
+  { j9__ PictureBox
+    MoveScaled(38.8571,54,5.2857,17)
+    Visible = False
+    Picture = Picture["image/manis-kiri.png"]
+  }
+  { p9__ Label
+    MoveScaled(33,66,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &HFFFF5F&
+    Foreground = &H000000&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p8__ Label
+    MoveScaled(38,59,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &H80FF00&
+    Foreground = &H000000&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p7__ Label
+    MoveScaled(44,56,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &HFFCF3F&
+    Foreground = &H000000&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p6__ Label
+    MoveScaled(50,59,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &H5F5FFF&
+    Foreground = &HFFFFFF&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p1__ Label
+    MoveScaled(57,61,10,4)
+    Visible = False
+    Font = Font["12"]
+    Background = &HFF0000&
+    Foreground = &HFFFFFF&
+    ToolTip = ("Next Letter must you type")
+    Text = ("space")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p2__ Label
+    MoveScaled(71,60,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &H5F5FFF&
+    Foreground = &HFFFFFF&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p3__ Label
+    MoveScaled(77,56,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &HFFCF3F&
+    Foreground = &H000000&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p4__ Label
+    MoveScaled(84,59,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &H80FF00&
+    Foreground = &H000000&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { p5__ Label
+    MoveScaled(89,65,4.2857,4.2857)
+    Visible = False
+    Font = Font["Bold,12"]
+    Background = &HFFFF5F&
+    Foreground = &H000000&
+    ToolTip = ("Next Letter must you type")
+    Text = ("g")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+}
