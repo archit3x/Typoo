@@ -13,6 +13,7 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
+<<<<<<< HEAD
 File[2]="FMain.class:10.1"
 File[3]="About.form"
 File[4]="About.class:5.3"
@@ -22,4 +23,14 @@ Count=4
 [Watches]
 Count=1
 Watch[1]="Key.Code"
+=======
+Active=1
+File[2]="FMain.class:2.19"
+File[3]="About.form"
+File[4]="About.class:17.62"
+Count=4
+
+[Watches]
+Count=0
+>>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
 
