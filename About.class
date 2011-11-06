@@ -2,13 +2,7 @@
 
 
 PUBLIC SUB Form_Open()
-<<<<<<< HEAD
   ME.Center
-=======
-
-  ME.Center
-
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
 END
 
 PUBLIC SUB close___Click()
@@ -28,7 +22,6 @@ PUBLIC SUB mail_me2_Click()
   Desktop.SendMail(["karangdesaku@yahoo.co.id"],,, "[Typoo]")
 
 END
-<<<<<<< HEAD
 
 PUBLIC SUB mail_me3_Click()
 
@@ -36,5 +29,3 @@ PUBLIC SUB mail_me3_Click()
 
 END
 
-=======
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6

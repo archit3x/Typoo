@@ -1,6 +1,5 @@
 ' Gambas class file
 
-<<<<<<< HEAD
 ' Typoo versi 0.3 BETA --------------------------------------------
 ' Small software to learn fast typing
 ' 
@@ -12,22 +11,6 @@
 '
 ' coded in Gambas 2.22 on Kubuntu 11.10 machine
 '
-=======
-' Typoo versi 0.2.8 BETA --------------------------------------------
-' Program untuk memperlancar kecepatan mengetik 10 jari
-' Program ini hasil porting yang belum sempurna dari program
-' saya yang ada di Windows (opensource juga) yaitu Tiny Typing Tutor
-' 
-' Programmer : Kusuma Negara <deny.krishna108@gmail.com>
-' Artwork Designer : Hamzah Fahrudin <karangdesaku@yahoo.co.id>
-' Lisensi : GPL GNU General Public License Version 3
-' Site : http://ubuntu-indonesia.com
-' Blog : http://iptek108.blogspot.com
-' 
-' Dibuat dengan GAMBAS 2.19 dalam mesin Ubuntu Lucid 10.04.3 LTS
-' -------------------------------------------------------------------
-
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
 ' ---------------------------------------------------------------------------------------
 ' "Diluar sana orang bisa berbagi "emas". Meski saya cuma bisa berbagi "kerikil",
 ' setidaknya hal itu tidak mengurangi semangat berbagi saya untuk teman - teman
@@ -53,7 +36,6 @@ PUBLIC __mulai_ngetik AS Boolean
 PUBLIC __correct_typing AS Boolean
 PUBLIC __is_capslock_on AS Boolean
 
-<<<<<<< HEAD
 PUBLIC __mode_typoo AS Integer
 PUBLIC tuts_number AS Integer
 
@@ -93,27 +75,6 @@ PUBLIC SUB open_file___Click()
   board__.Text = __text
   char_count__.Text = Format(Len(__text), "#,##")
   null_info
-=======
-PUBLIC SUB _new()
-  ME.Center
-END
-
-PUBLIC SUB Form_Open()
-  info_char__.Text = ""
-  type_here__.SetFocus
-END
-
-PUBLIC SUB open_file___Click()
-
-  Dialog.Title = "Select file tutorial..."
-  Dialog.Filter = ["*.txt", "Text File"]
-  Dialog.Path = User.home 
-  IF Dialog.OpenFile(FALSE) THEN RETURN
-  __text = Trim((File.Load(Dialog.Path)))
-  board__.Text = __text
-  char_count__.Text = Format(Len(__text), "#,##")
-
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
 END
 
 PUBLIC SUB detect_capslock()
@@ -147,7 +108,6 @@ PUBLIC SUB caps_indicator(show_indicator AS Boolean)
   ENDIF 
 END
 
-<<<<<<< HEAD
 PUBLIC SUB capslock_info()
   'detect caps lock
   detect_capslock
@@ -166,19 +126,11 @@ PUBLIC SUB type_here___KeyPress()
 DIM i AS Integer
 
   'Case sensitive key code still not supported by Gambas
-=======
-
-PUBLIC SUB type_here___KeyPress()
-
-  'Case sensitive key code still not supported by Gambas
-
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
   IF __start_type = FALSE THEN 
-    Message.Info("Please click start to begin typing")
+    'Message.Info("Please click start to begin typing")
     RETURN 
   ENDIF 
   
-<<<<<<< HEAD
   ' Block some key function
   FOR i = 0 TO func_array.Max
     'Message(func_array[i])
@@ -196,30 +148,8 @@ PUBLIC SUB type_here___KeyPress()
     detect_capslock
     IF __is_capslock_on = TRUE THEN 
       __correct_typing = FALSE
-      RETURN
-=======
-  'detect caps lock
-  detect_capslock
-  IF __is_capslock_on = TRUE THEN 
-    caps_indicator(TRUE)
-  ELSE 
-    caps_indicator(FALSE)
-  ENDIF 
-  
-  __char = Mid(__text, __pos, 1)
-
-  ' IF Key.Code = Key[__char] THEN 
-  '   __correct_typing = TRUE
-  ' ELSE 
-  '   __correct_typing = FALSE
-  ' ENDIF 
-
-  IF Asc(__char) >= 97 AND Asc(__char) <= 122 THEN     ' huruf a - z
-    detect_capslock
-    IF __is_capslock_on = TRUE THEN 
-      __correct_typing = FALSE
-      GOTO skip_test
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
+      'RETURN
+      GOTO checktype
     ENDIF 
     IF Key.Code = Key[__char] AND IF Key.Shift THEN
       __correct_typing = FALSE
@@ -228,11 +158,7 @@ PUBLIC SUB type_here___KeyPress()
     ELSE 
       __correct_typing = FALSE
     ENDIF 
-<<<<<<< HEAD
   ELSE IF Asc(__char) >= 65 AND Asc(__char) <= 90 THEN ' letter A - Z
-=======
-  ELSE IF Asc(__char) >= 65 AND Asc(__char) <= 90 THEN ' huruf A - Z
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
     IF Key.Code = Key[__char] AND IF Key.Shift THEN
       detect_capslock
       IF __is_capslock_on = FALSE THEN
@@ -252,11 +178,7 @@ PUBLIC SUB type_here___KeyPress()
         __correct_typing = FALSE
       ENDIF
     ENDIF
-<<<<<<< HEAD
   ELSE IF Asc(__char) >= 44 AND Asc(__char) <= 57 THEN     ' number 0 - 9 dan some character
-=======
-  ELSE IF Asc(__char) >= 44 AND Asc(__char) <= 57 THEN     ' angka 0 - 9 dan beberapa karakter
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
     IF (Key.Code) = Key[__char] THEN
       __correct_typing = TRUE
     ELSE
@@ -290,9 +212,8 @@ PUBLIC SUB type_here___KeyPress()
     RETURN
   ENDIF
 
-<<<<<<< HEAD
+checktype:
     IF __correct_typing = TRUE THEN
-  
     '// if correct typing then mark next letter with blue color
     IF __pos <= Len(__text)
       WITH board__
@@ -327,38 +248,12 @@ PUBLIC SUB type_here___KeyPress()
   ELSE     '// user type wrong letter :(
   
     '// if user press shift or capslock button don't record it as error :(
-=======
-skip_test:
-  IF __correct_typing = TRUE THEN
-  
-    IF __pos <= Len(__text)
-      board__.Select(__pos, 1)
-      board__.Format.Color = Color.Blue '&FFFF00&
-      board__.Format.Font.Underline = TRUE
-      board__.Unselect
-    ENDIF 
-      board__.Select(__pos - 1, 1)
-    IF __stop_type = FALSE THEN 
-      board__.Format.Color = &FF6600&
-    ELSE 
-      board__.Format.Color = Color.Gray
-    ENDIF 
-    board__.Format.Font.Underline = FALSE
-    board__.Unselect
-    'FFFF00
-    __pos = __pos + 1
-    __type_count = __type_count + 1
-    info_char__.Foreground = &HFFFF00&
-   __stop_type = FALSE
-  ELSE
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
     IF Key.Code = 4128 THEN  'key shift
       __stop_type = __stop_type
       RETURN
     ENDIF
     IF Key.Code = 4132 THEN  'key capslock
       __stop_type = __stop_type
-<<<<<<< HEAD
       capslock_info
       RETURN 
     ENDIF 
@@ -420,33 +315,10 @@ skip_test:
         prev_tutor__.Enabled = TRUE
       ENDIF 
     ENDIF 
-=======
-      RETURN 
-    ENDIF 
-    IF __stop_type = FALSE THEN
-        __error = __error + 1
-    ENDIF
-    __pos = __pos
-    __stop_type = TRUE
-    char_error__.Text = Format(__error, "#,##")
-    info_char__.Foreground = Color.Red
-    'board__.Format.Color = Color.Red
-    board__.Select(__pos - 1, 1)
-    board__.Format.Color = Color.Red '&FFFF00&
-    board__.Format.Font.Underline = TRUE
-    board__.Unselect    
-  ENDIF 
-  IF __pos <= Len(__text) THEN 
-    info_char__.Text = Mid(__text, __pos, 1)
-    map_virtual_keyboard(info_char__.Caption)
-  ELSE 
-    stop_type___Click
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
   ENDIF 
 
 END
 
-<<<<<<< HEAD
 PUBLIC SUB init_virtualkeyboard_color(mode AS Integer)
   DIM c_yellow, c_green, c_orange, c_blue AS Integer
 
@@ -1239,507 +1111,10 @@ PUBLIC SUB map_virtual_keyboard(char_ AS String)
 END
 
 PUBLIC SUB start_type___Click()
-=======
-PUBLIC SUB map_virtual_keyboard(char_ AS String)
-  
-  ' I'm still not found yet how to optimize virtualkeyboard code
-  
-  b1.Background = Color.Default
-  b2.Background = Color.Default
-  b3.Background = Color.Default
-  b4.Background = Color.Default
-  b5.Background = Color.Default
-  b6.Background = Color.Default
-  b7.Background = Color.Default
-  b8.Background = Color.Default
-  b9.Background = Color.Default
-  b10.Background = Color.Default
-  b11.Background = Color.Default
-  b12.Background = Color.Default
-  b13.Background = Color.Default
-  b14.Background = Color.Default
-  b15.Background = Color.Default
-  b16.Background = Color.Default
-  b17.Background = Color.Default
-  b18.Background = Color.Default
-  b19.Background = Color.Default
-  b20.Background = Color.Default
-  b21.Background = Color.Default
-  b22.Background = Color.Default
-  b23.Background = Color.Default
-  b24.Background = Color.Default
-  b25.Background = Color.Default
-  b26.Background = Color.Default
-  b27.Background = Color.Default
-  b28.Background = Color.Default
-  b29.Background = Color.Default
-  b30.Background = Color.Default
-  b31.Background = Color.Default
-  b32.Background = Color.Default
-  b33.Background = Color.Default
-  b34.Background = Color.Default
-  b35.Background = Color.Default
-  b36.Background = Color.Default
-  b37.Background = Color.Default
-  b38.Background = Color.Default
-  b39.Background = Color.Default
-  b40.Background = Color.Default
-  b41.Background = Color.Default
-  b42.Background = Color.Default
-  b43.Background = Color.Default
-  b44.Background = Color.Default
-  b45.Background = Color.Default
-  b46.Background = Color.Default
-  b47.Background = Color.Default
-  b48.Background = Color.Default
-  b49.Background = Color.Default
-  b50.Background = Color.Default
-  b51.Background = Color.Default
-  b52.Background = Color.Default
-  b53.Background = Color.Default
-  b54.Background = Color.Default
-  
-  b1.Foreground = Color.Black
-  b2.Foreground = Color.Black
-  b3.Foreground = Color.Black
-  b4.Foreground = Color.Black
-  b5.Foreground = Color.Black
-  b6.Foreground = Color.Black
-  b7.Foreground = Color.Black
-  b8.Foreground = Color.Black
-  b9.Foreground = Color.Black
-  b10.Foreground = Color.Black
-  b11.Foreground = Color.Black
-  b12.Foreground = Color.Black
-  b13.Foreground = Color.Black
-  b14.Foreground = Color.Black
-  b15.Foreground = Color.Black
-  b16.Foreground = Color.Black
-  b17.Foreground = Color.Black
-  b18.Foreground = Color.Black
-  b19.Foreground = Color.Black
-  b20.Foreground = Color.Black
-  b21.Foreground = Color.Black
-  b22.Foreground = Color.Black
-  b23.Foreground = Color.Black
-  b24.Foreground = Color.Black
-  b25.Foreground = Color.Black
-  b26.Foreground = Color.Black
-  b27.Foreground = Color.Black
-  b28.Foreground = Color.Black
-  b29.Foreground = Color.Black
-  b30.Foreground = Color.Black
-  b31.Foreground = Color.Black
-  b32.Foreground = Color.Black
-  b33.Foreground = Color.Black
-  b34.Foreground = Color.Black
-  b35.Foreground = Color.Black
-  b36.Foreground = Color.Black
-  b37.Foreground = Color.Black
-  b38.Foreground = Color.Black
-  b39.Foreground = Color.Black
-  b40.Foreground = Color.Black
-  b41.Foreground = Color.Black
-  b42.Foreground = Color.Black
-  b43.Foreground = Color.Black
-  b44.Foreground = Color.Black
-  b45.Foreground = Color.Black
-  b46.Foreground = Color.Black
-  b47.Foreground = Color.Black
-  b48.Foreground = Color.Black
-  b49.Foreground = Color.Black
-  b50.Foreground = Color.Black
-  b51.Foreground = Color.Black
-  b52.Foreground = Color.Black
-  b53.Foreground = Color.Black
-  b54.Foreground = Color.Black
-
-
-
-  'char_ = Lower(char_)
-  SELECT CASE char_
-       CASE "a"
-         b30.Background = Color.Red
-         b30.Foreground = Color.White
-       CASE "s"
-         b31.Background = Color.Red
-         b31.Foreground = Color.White
-       CASE "d"
-         b32.Background = Color.Red
-         b32.Foreground = Color.White
-       CASE "f"
-         b33.Background = Color.Red
-         b33.Foreground = Color.White
-       CASE "g"
-         b34.Background = Color.Red
-         b34.Foreground = Color.White
-       CASE "h"
-         b35.Background = Color.Red
-         b35.Foreground = Color.White
-       CASE "j"
-         b36.Background = Color.Red
-         b36.Foreground = Color.White
-       CASE "k"
-         b37.Background = Color.Red
-         b37.Foreground = Color.White
-       CASE "l"
-         b38.Background = Color.Red
-         b38.Foreground = Color.White
-       CASE ";"
-         b39.Background = Color.Red
-         b39.Foreground = Color.White
-       CASE "'"
-         b40.Background = Color.Red
-         b40.Foreground = Color.White
-       CASE "q"
-         b16.Background = Color.Red
-         b16.Foreground = Color.White
-       CASE "w"
-         b17.Background = Color.Red
-         b17.Foreground = Color.White
-       CASE "e"
-         b18.Background = Color.Red
-         b18.Foreground = Color.White
-       CASE "r"
-         b19.Background = Color.Red
-         b19.Foreground = Color.White
-       CASE "t"
-         b20.Background = Color.Red
-         b20.Foreground = Color.White
-       CASE "y"
-         b21.Background = Color.Red
-         b21.Foreground = Color.White
-       CASE "u"
-         b22.Background = Color.Red
-         b22.Foreground = Color.White
-       CASE "i"
-         b23.Background = Color.Red
-         b23.Foreground = Color.White
-       CASE "o"
-         b24.Background = Color.Red
-         b24.Foreground = Color.White
-       CASE "p"
-         b25.Background = Color.Red
-         b25.Foreground = Color.White
-       CASE "[" 
-         b26.Background = Color.Red
-         b26.Foreground = Color.White
-       CASE "{"
-         b26.Background = Color.Red
-         b26.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "]"
-         b27.Background = Color.Red
-         b27.Foreground = Color.White
-       CASE "}"
-         b27.Background = Color.Red
-         b27.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "\""
-         b28.Background = Color.Red
-         b28.Foreground = Color.White
-       CASE "|"
-         b28.Background = Color.Red
-         b28.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "z"
-         b43.Background = Color.Red
-         b43.Foreground = Color.White
-       CASE "x"
-         b44.Background = Color.Red
-         b44.Foreground = Color.White
-       CASE "c"
-         b45.Background = Color.Red
-         b45.Foreground = Color.White
-       CASE "v"
-         b46.Background = Color.Red
-         b46.Foreground = Color.White
-       CASE "b"
-         b47.Background = Color.Red
-         b47.Foreground = Color.White
-       CASE "n"
-         b48.Background = Color.Red
-         b48.Foreground = Color.White
-       CASE "m"
-         b49.Background = Color.Red
-         b49.Foreground = Color.White
-       CASE ","
-         b50.Background = Color.Red
-         b50.Foreground = Color.White
-       CASE "<"
-         b50.Background = Color.Red
-         b50.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "."
-         b51.Background = Color.Red
-         b51.Foreground = Color.White
-       CASE ">"
-         b51.Background = Color.Red
-         b51.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE " "
-         b54.Background = Color.Red
-         b54.Foreground = Color.White
-       CASE "/"
-         b52.Background = Color.Red
-         b52.Foreground = Color.White
-       CASE "?"
-         b52.Background = Color.Red
-         b52.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "`"
-         b1.Background = Color.Red
-         b1.Foreground = Color.White
-       CASE "~"
-         b1.Background = Color.Red
-         b1.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "1"
-         b2.Background = Color.Red
-         b2.Foreground = Color.White
-       CASE "!"
-         b2.Background = Color.Red
-         b2.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "2"
-         b3.Background = Color.Red
-         b3.Foreground = Color.White
-       CASE "@"
-         b3.Background = Color.Red
-         b3.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "3"
-         b4.Background = Color.Red
-         b4.Foreground = Color.White
-       CASE "#"
-         b4.Background = Color.Red
-         b4.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "4"
-         b5.Background = Color.Red
-         b5.Foreground = Color.White
-       CASE "$"
-         b5.Background = Color.Red
-         b5.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "5"
-         b6.Background = Color.Red
-         b6.Foreground = Color.White
-       CASE "%"
-         b6.Background = Color.Red
-         b6.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "6"
-         b7.Background = Color.Red
-         b7.Foreground = Color.White
-       CASE "^"
-         b7.Background = Color.Red
-         b7.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "7"
-         b8.Background = Color.Red
-         b8.Foreground = Color.White
-       CASE "&"
-         b8.Background = Color.Red
-         b8.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "8"
-         b9.Background = Color.Red
-         b9.Foreground = Color.White
-       CASE "*"
-         b9.Background = Color.Red
-         b9.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "9"
-         b10.Background = Color.Red
-         b10.Foreground = Color.White
-       CASE "("
-         b10.Background = Color.Red
-         b10.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "0"
-         b11.Background = Color.Red
-         b11.Foreground = Color.White
-       CASE ")"
-         b11.Background = Color.Red
-         b11.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "-"
-         b12.Background = Color.Red
-         b12.Foreground = Color.White
-       CASE "_"
-         b12.Background = Color.Red
-         b12.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "="
-         b13.Background = Color.Red
-         b13.Foreground = Color.White
-       CASE "+"
-         b13.Background = Color.Red
-         b13.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White
-       CASE "A"
-         b30.Background = Color.Red
-         b30.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White
-       CASE "S"
-         b31.Background = Color.Red
-         b31.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White     
-       CASE "D"
-         b32.Background = Color.Red
-         b32.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "F"
-         b33.Background = Color.Red
-         b33.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "G"
-         b34.Background = Color.Red
-         b34.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "H"
-         b35.Background = Color.Red
-         b35.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                
-       CASE "J"
-         b36.Background = Color.Red
-         b36.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                
-       CASE "K"
-         b37.Background = Color.Red
-         b37.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                
-       CASE "L"
-         b38.Background = Color.Red
-         b38.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                
-       CASE "Q"
-         b16.Background = Color.Red
-         b16.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "W"
-         b17.Background = Color.Red
-         b17.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "E"
-         b18.Background = Color.Red
-         b18.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "R"
-         b19.Background = Color.Red
-         b19.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "T"
-         b20.Background = Color.Red
-         b20.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White       
-       CASE "Y"
-         b21.Background = Color.Red
-         b21.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                      
-       CASE "U"
-         b22.Background = Color.Red
-         b22.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                      
-       CASE "I"
-         b23.Background = Color.Red
-         b23.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                      
-       CASE "O"
-         b24.Background = Color.Red
-         b24.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                      
-       CASE "P"
-         b25.Background = Color.Red
-         b25.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                      
-       CASE "Z"
-         b43.Background = Color.Red
-         b43.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White              
-       CASE "X"
-         b44.Background = Color.Red
-         b44.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White              
-       CASE "C"
-         b45.Background = Color.Red
-         b45.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White              
-       CASE "V"
-         b46.Background = Color.Red
-         b46.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White              
-       CASE "B"
-         b47.Background = Color.Red
-         b47.Foreground = Color.White
-         b53.Background = Color.Red
-         b53.Foreground = Color.White              
-       CASE "N"
-         b48.Background = Color.Red
-         b48.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                             
-       CASE "M"
-         b49.Background = Color.Red
-         b49.Foreground = Color.White
-         b42.Background = Color.Red
-         b42.Foreground = Color.White                      
-   END SELECT
-  
-END
-
-
-PUBLIC SUB start_type___Click()
-
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
   IF __text <> "" THEN 
     __start_type = TRUE
     stop_type__.Enabled = TRUE
     start_type__.Enabled = FALSE
-<<<<<<< HEAD
     'open_file__.Enabled = FALSE
     mn_open.Enabled = FALSE
     null_info
@@ -1818,58 +1193,11 @@ PUBLIC SUB stop_type___Click()
 END
 
 PUBLIC SUB calculate_speed()
-=======
-
-    __pos = 1
-    __type_count = 0
-    
-    board__.SelectAll
-    board__.Format.Color = Color.Black
-    board__.Refresh
-    board__.Select(__pos - 1, 1)
-    board__.Format.Color = Color.Blue
-    board__.Format.Font.Underline = TRUE
-    board__.Unselect
-    type_here__.SetFocus
-    
-    __char = Mid(__text, __pos, 1)
-
-    char_error__.Caption = "0"
-    info_char__.Caption = __char
-    info_char__.ForeColor = &HFFFF00&
-    start_time__.Caption = Format(Time(Now), "hh:nn:ss")
-    __start_time = Time(Now)
-    stop_time__.Caption = "00:00:00"
-    speed__.Caption = "0"
-    Timer1.Enabled = TRUE
-    map_virtual_keyboard(__char)
-  ELSE 
-    Message.Info("Please open tutorial file")
-  ENDIF 
-
-END
-
-PUBLIC SUB stop_type___Click()
-
-  __start_type = FALSE
-  start_type__.Enabled = TRUE
-  stop_type__.Enabled = FALSE
-  Timer1.Enabled = FALSE
-  IF __type_count > 0 THEN 
-    calculate_speed
-  ENDIF 
-
-END
-
-PUBLIC SUB calculate_speed()
-  
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
   DIM speed AS Integer
   
   stop_time__.Caption = Format(CDate(__start_time + Date(0, 0, 0, 0, 0, __time)), "hh:nn:ss")
   speed = __type_count / (__time / 60)
   speed__.Caption = speed
-<<<<<<< HEAD
 END
 
 PUBLIC SUB calculate_accuracy()
@@ -2102,38 +1430,11 @@ PUBLIC SUB mn_exit_Click()
   ME.Close
 END
 
-PUBLIC SUB mn_tutorial_Click()
-TRY 
-  Desktop.Open(Application.Path & "/tutorial.pdf")
-  
-CATCH 
-  Message.Error("Cannot open tutorial.pdf")
+PUBLIC SUB Form_KeyPress()
+  detect_capslock
+  IF __is_capslock_on = TRUE THEN 
+    caps_indicator(TRUE)
+  ELSE 
+    caps_indicator(FALSE)
+  ENDIF 
 END
-=======
-  
-END
-
-PUBLIC SUB board___GotFocus()
-
-  type_here__.SetFocus
-
-END
-
-PUBLIC SUB Timer1_Timer()
-
-  __time = __time + 1
-
-END
-
-PUBLIC SUB Form_Close()
-
-  Timer1.Enabled = FALSE
-
-END
-
-PUBLIC SUB about___Click()
-
-  About.Show
-
-END
->>>>>>> f7624561c765fc7c052c77616c3f3ac4cb9bc0f6
