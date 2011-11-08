@@ -88,6 +88,8 @@ PUBLIC SUB detect_capslock()
   iKeyLocks = Val(sShellOutput)
   
   SELECT iKeyLocks
+  CASE 0
+    __is_capslock_on = FALSE
   CASE 1
     __is_capslock_on = TRUE
   CASE 2

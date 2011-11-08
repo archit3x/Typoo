@@ -3,7 +3,7 @@
 Title=Typoo
 Startup=FMain
 Icon=typoo-icon.png
-Version=0.3.3
+Version=0.3.4
 Library=gb.qt
 Library=gb.form
 Library=gb.desktop
