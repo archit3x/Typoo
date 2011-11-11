@@ -1,0 +1,425 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-11-01 04:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .project:1
+msgid "Typoo"
+msgstr ""
+
+#: .project:2
+msgid "Program sederhana untuk belajar ngetik"
+msgstr ""
+
+#: FMain.class:99
+msgid "Typoo 1.0 RC"
+msgstr ""
+
+#: FMain.class:106 latihan.class:1957 mahir.class:539
+msgid "Mulai"
+msgstr ""
+
+#: FMain.class:111
+msgid "Mode Latihan"
+msgstr ""
+
+#: FMain.class:120
+msgid "Mode Mahir"
+msgstr ""
+
+#: FMain.class:128
+msgid "Tentang Program"
+msgstr ""
+
+#: latihan.class:1316
+msgid "Typoo - Mode Latihan"
+msgstr ""
+
+#: latihan.class:1330
+msgid ""
+"~\n"
+"`"
+msgstr ""
+
+#: latihan.class:1337
+msgid ""
+"!\n"
+"1"
+msgstr ""
+
+#: latihan.class:1344
+msgid ""
+"@\n"
+"2"
+msgstr ""
+
+#: latihan.class:1351
+msgid ""
+"#\n"
+"3"
+msgstr ""
+
+#: latihan.class:1358
+msgid ""
+"$\n"
+"4"
+msgstr ""
+
+#: latihan.class:1365
+msgid ""
+"%\n"
+"5"
+msgstr ""
+
+#: latihan.class:1372
+msgid ""
+"^\n"
+"6"
+msgstr ""
+
+#: latihan.class:1379
+msgid ""
+"&&\n"
+"7"
+msgstr ""
+
+#: latihan.class:1386
+msgid ""
+"*\n"
+"8"
+msgstr ""
+
+#: latihan.class:1393
+msgid ""
+"(\n"
+"9"
+msgstr ""
+
+#: latihan.class:1400
+msgid ""
+")\n"
+"0"
+msgstr ""
+
+#: latihan.class:1407
+msgid ""
+"_\n"
+"-"
+msgstr ""
+
+#: latihan.class:1414
+msgid ""
+"+\n"
+"="
+msgstr ""
+
+#: latihan.class:1421
+msgid "Bksp"
+msgstr ""
+
+#: latihan.class:1428
+msgid "TAB"
+msgstr ""
+
+#: latihan.class:1435
+msgid "Q"
+msgstr ""
+
+#: latihan.class:1442
+msgid "W"
+msgstr ""
+
+#: latihan.class:1449
+msgid "E"
+msgstr ""
+
+#: latihan.class:1456
+msgid "R"
+msgstr ""
+
+#: latihan.class:1463
+msgid "T"
+msgstr ""
+
+#: latihan.class:1470
+msgid "Y"
+msgstr ""
+
+#: latihan.class:1477
+msgid "U"
+msgstr ""
+
+#: latihan.class:1484
+msgid "I"
+msgstr ""
+
+#: latihan.class:1491
+msgid "O"
+msgstr ""
+
+#: latihan.class:1498
+msgid "P"
+msgstr ""
+
+#: latihan.class:1505
+msgid ""
+"{\n"
+"["
+msgstr ""
+
+#: latihan.class:1512
+msgid ""
+"}\n"
+"]"
+msgstr ""
+
+#: latihan.class:1519
+msgid ""
+"|\n"
+"\\"
+msgstr ""
+
+#: latihan.class:1526
+msgid "A"
+msgstr ""
+
+#: latihan.class:1533
+msgid "S"
+msgstr ""
+
+#: latihan.class:1540
+msgid "D"
+msgstr ""
+
+#: latihan.class:1547
+msgid "F"
+msgstr ""
+
+#: latihan.class:1554
+msgid "G"
+msgstr ""
+
+#: latihan.class:1561
+msgid "H"
+msgstr ""
+
+#: latihan.class:1568
+msgid "J"
+msgstr ""
+
+#: latihan.class:1575
+msgid "K"
+msgstr ""
+
+#: latihan.class:1582
+msgid "L"
+msgstr ""
+
+#: latihan.class:1589
+msgid ""
+":\n"
+";"
+msgstr ""
+
+#: latihan.class:1596
+msgid ""
+"\"\n"
+"'"
+msgstr ""
+
+#: latihan.class:1603
+msgid "CAPS"
+msgstr ""
+
+#: latihan.class:1610
+msgid "ENTER"
+msgstr ""
+
+#: latihan.class:1617
+msgid "Z"
+msgstr ""
+
+#: latihan.class:1624
+msgid "X"
+msgstr ""
+
+#: latihan.class:1631
+msgid "C"
+msgstr ""
+
+#: latihan.class:1638
+msgid "V"
+msgstr ""
+
+#: latihan.class:1645
+msgid "B"
+msgstr ""
+
+#: latihan.class:1652
+msgid "N"
+msgstr ""
+
+#: latihan.class:1659
+msgid "M"
+msgstr ""
+
+#: latihan.class:1666
+msgid ""
+"<\n"
+","
+msgstr ""
+
+#: latihan.class:1673
+msgid ""
+">\n"
+"."
+msgstr ""
+
+#: latihan.class:1680
+msgid ""
+"?\n"
+"/"
+msgstr ""
+
+#: latihan.class:1687
+msgid "SHIFT"
+msgstr ""
+
+#: latihan.class:1701
+msgid "CTRL"
+msgstr ""
+
+#: latihan.class:1790
+msgid "ALT"
+msgstr ""
+
+#: latihan.class:1797
+msgid "SPACE"
+msgstr ""
+
+#: latihan.class:1825
+msgid "Next Letter must you type"
+msgstr ""
+
+#: latihan.class:1826 mahir.class:722
+msgid "g"
+msgstr ""
+
+#: latihan.class:1874
+msgid "space"
+msgstr ""
+
+#: latihan.class:1939
+msgid "Previous Tutorial"
+msgstr ""
+
+#: latihan.class:1948
+msgid "Next Tutorial"
+msgstr ""
+
+#: latihan.class:1967 mahir.class:548
+msgid "Berhenti"
+msgstr ""
+
+#: latihan.class:1976
+msgid "Buka berkas latihan"
+msgstr ""
+
+#: latihan.class:1994 mahir.class:795
+msgid "Caps Lock AKTIF"
+msgstr ""
+
+#: mahir.class:492
+msgid "Typoo - Mode Mahir"
+msgstr ""
+
+#: mahir.class:498
+msgid "Berkas"
+msgstr ""
+
+#: mahir.class:501
+msgid "Buka berkas latihan..."
+msgstr ""
+
+#: mahir.class:510
+msgid "Keluar"
+msgstr ""
+
+#: mahir.class:568
+msgid "Statistik"
+msgstr ""
+
+#: mahir.class:582
+msgid "Jumlah huruf yang diketik"
+msgstr ""
+
+#: mahir.class:583
+msgid "0"
+msgstr ""
+
+#: mahir.class:592
+msgid "Jumlah kesalahan mengetik"
+msgstr ""
+
+#: mahir.class:601
+msgid "Kecepatan"
+msgstr ""
+
+#: mahir.class:610
+msgid "Huruf"
+msgstr ""
+
+#: mahir.class:619
+msgid "Salah"
+msgstr ""
+
+#: mahir.class:638
+msgid "00:00:00"
+msgstr ""
+
+#: mahir.class:656
+msgid "Wkt. Mulai"
+msgstr ""
+
+#: mahir.class:665
+msgid "Wkt. Selesai"
+msgstr ""
+
+#: mahir.class:674
+msgid "Huruf per menit"
+msgstr ""
+
+#: mahir.class:683
+msgid "Kecepatan mengetik anda"
+msgstr ""
+
+#: mahir.class:693
+msgid ":"
+msgstr ""
+
+#: mahir.class:721
+msgid "Huruf selanjutnya yang harus diketik"
+msgstr ""
+
+#: mahir.class:730
+msgid "Huruf Selanjutnya"
+msgstr ""
+
+#: mahir.class:761
+msgid "Keakuratan :"
+msgstr ""
+
+#: mahir.class:770
+msgid "Keakuratan mengetik"
+msgstr ""
+
+#: mahir.class:771
+msgid "0 %"
+msgstr ""

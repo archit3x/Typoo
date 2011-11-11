@@ -1,0 +1,1212 @@
+' Gambas class file
+
+' Typoo --------------------------------------------
+' Small software to learn fast typing
+' 
+' Developers: --------------------------------------------------------
+' Programmer : Kusuma Negara <deny.krishna108@gmail.com>
+' Artwork Designer : Hamzah Fahrudin <karangdesaku@yahoo.co.id>
+' Package Maintainer : Damar Riyadi <tldm217@gmail.com>
+' License : GPL GNU General Public License Version 2
+'
+' coded in Gambas 2.22 on Kubuntu 11.10 machine
+'
+' ---------------------------------------------------------------------------------------
+' "Diluar sana orang bisa berbagi "emas". Meski saya cuma bisa berbagi "kerikil",
+' setidaknya hal itu tidak mengurangi semangat berbagi saya untuk teman - teman
+' semua"
+' 
+' Semoga Aplikasi ini bisa bermanfaat untuk dunia pendidikan di Indonesia :)
+' 
+' 
+' Thanks to:
+' GAMBAS Creator
+' ---------------------------------------------------------------------------------------
+
+PUBLIC __text AS String         
+PUBLIC __start_type AS Boolean       
+PUBLIC __pos AS Integer
+PUBLIC __char AS String
+PUBLIC __stop_type AS Boolean
+PUBLIC __correct_typing AS Boolean
+PUBLIC __is_capslock_on AS Boolean
+
+PUBLIC __mode_typoo AS Integer
+PUBLIC tuts_number AS Integer
+
+PUBLIC key_function AS String = "4100,4097,4096,4144,4145,4146,4147,4148,4149,4150,4151,4152,4153,4154,4155,4134,4104,4102,4112,4118,4103,4113,4119,4114,4115,4117,4116,4133,4129,4179,4131"
+PUBLIC func_array AS String[]
+
+PUBLIC SUB _new()
+  init_virtualkeyboard_color
+  type_here__.SetFocus
+  init_key_function
+  typoo_mode__.Value = TRUE
+  ME.Center
+  ME.Show
+END
+
+PUBLIC SUB Form_Activate()
+  type_here__.SetFocus
+END
+
+PUBLIC SUB default_button_state(mode AS Integer)
+  SELECT CASE mode
+    CASE 0 '//tutorial mode
+      open_tutor__.Visible = FALSE
+      start_tutor__.Visible = FALSE
+      stop_tutor__.Visible = FALSE
+      
+      prev_tutor__.Visible = TRUE
+      next_tutor__.Visible = TRUE
+      prev_tutor__.Enabled = FALSE
+      next_tutor__.Enabled = TRUE
+      typoo_mode__.ToolTip = "Mode Latihan"
+      'typoo_mode__.Value = TRUE
+    CASE 1
+      prev_tutor__.Visible = FALSE
+      next_tutor__.Visible = FALSE
+  
+      open_tutor__.Visible = TRUE
+      start_tutor__.Visible = TRUE
+      stop_tutor__.Visible = TRUE    
+      typoo_mode__.ToolTip = "Mode Manual"
+      'typoo_mode__.Value = FALSE
+      open_tutor__.Enabled = TRUE
+      start_tutor__.Enabled = TRUE
+      stop_tutor__.Enabled = FALSE
+  END SELECT 
+END
+
+PUBLIC SUB init_key_function()
+  func_array = Split(key_function, ",")
+END
+
+PUBLIC SUB board___GotFocus()
+  type_here__.SetFocus
+END
+
+PUBLIC SUB start_tutor___Click()
+  IF __text = "" THEN 
+    Message.Error("Silahkan buka berkas latihan")
+  ELSE 
+    __start_type = TRUE
+    start_tutor__.Enabled = FALSE
+    stop_tutor__.Enabled = TRUE
+    open_tutor__.Enabled = FALSE
+    board__.Text = __text
+    Board_Init
+    Board_First_Char 
+  ENDIF 
+END
+
+PUBLIC SUB stop_tutor___Click()
+  __start_type = FALSE
+  start_tutor__.Enabled = TRUE
+  stop_tutor__.Enabled = FALSE
+  open_tutor__.Enabled = TRUE
+END
+
+PUBLIC SUB detect_capslock()
+  
+  'this code take from Stefano Palmeri post in gambas forum (http://gambasrad.org/zforum/view_topic?topic_id=1685)
+  
+  DIM sShellOutput AS String
+  DIM iKeyLocks AS Integer
+  
+  SHELL "xset q | grep 'LED mask:' | grep -o 0000000." TO sShellOutput
+  iKeyLocks = Val(sShellOutput)
+  
+  SELECT iKeyLocks
+  CASE 0
+    __is_capslock_on = FALSE
+  CASE 1
+    __is_capslock_on = TRUE
+  CASE 2
+    __is_capslock_on = FALSE
+  CASE 3
+    __is_capslock_on = TRUE
+  END SELECT 
+END
+
+PUBLIC SUB caps_indicator(show_indicator AS Boolean)
+  IF show_indicator = TRUE THEN 
+    pict_caps_indicator__.Visible = TRUE
+    lb_caps_indicator__.Visible = TRUE
+  ELSE 
+    pict_caps_indicator__.Visible = FALSE
+    lb_caps_indicator__.Visible = FALSE
+  ENDIF 
+END
+
+PUBLIC SUB capslock_info()
+  'detect caps lock
+  detect_capslock
+  IF __is_capslock_on = TRUE THEN 
+    caps_indicator(TRUE)
+  ELSE 
+    caps_indicator(FALSE)
+  ENDIF 
+END
+
+PUBLIC SUB type_here___KeyPress()
+DIM i AS Integer
+
+  'Case sensitive key code still not supported by Gambas
+  IF __mode_typoo = 1 THEN 
+    IF __start_type = FALSE THEN 
+      Message.Error("Silahkan klik tombol Mulai untuk memulai latihan")
+      RETURN 
+    ENDIF 
+  ENDIF   
+  
+
+  ' Block some key function
+  FOR i = 0 TO func_array.Max
+    IF func_array[i] = Str(Key.Code) THEN 
+      type_here__.SetFocus
+      STOP EVENT 
+      RETURN 
+    ENDIF 
+  NEXT   
+
+  capslock_info
+  
+  __char = Mid(__text, __pos, 1)
+  IF Asc(__char) >= 97 AND Asc(__char) <= 122 THEN     ' letter a - z
+    detect_capslock
+    IF __is_capslock_on = TRUE THEN 
+      __correct_typing = FALSE
+      'RETURN
+      GOTO checktype
+    ENDIF 
+    IF Key.Code = Key[__char] AND IF Key.Shift THEN
+      __correct_typing = FALSE
+    ELSE IF Key.Code = Key[__char] THEN 
+      __correct_typing = TRUE
+    ELSE 
+      __correct_typing = FALSE
+    ENDIF 
+  ELSE IF Asc(__char) >= 65 AND Asc(__char) <= 90 THEN ' letter A - Z
+    IF Key.Code = Key[__char] AND IF Key.Shift THEN
+      detect_capslock
+      IF __is_capslock_on = FALSE THEN
+        __correct_typing = TRUE
+      ELSE 
+        __correct_typing = FALSE
+      ENDIF 
+    ELSE
+      detect_capslock
+      IF __is_capslock_on = TRUE THEN
+        IF (Key.Code) = Key[__char] THEN
+          __correct_typing = TRUE
+        ELSE
+          __correct_typing = FALSE
+        ENDIF
+      ELSE
+        __correct_typing = FALSE
+      ENDIF
+    ENDIF
+  ELSE IF Asc(__char) >= 44 AND Asc(__char) <= 57 THEN     ' number 0 - 9 dan some character
+    IF (Key.Code) = Key[__char] THEN
+      __correct_typing = TRUE
+    ELSE
+      __correct_typing = FALSE
+    ENDIF
+  ELSE IF (Asc(__char) = 32) OR (Asc(__char) = 39) OR (Asc(__char) = 59) OR (Asc(__char) = 61) OR (Asc(__char) = 91) OR (Asc(__char) = 92) OR (Asc(__char) = 93) OR (Asc(__char) = 96) THEN ' spasi 59 61 91 92 93 96 
+    IF (Key.Code) = Key[__char] THEN
+      __correct_typing = TRUE
+    ELSE
+      __correct_typing = FALSE
+    ENDIF
+  ELSE IF Asc(__char) >= 33 AND Asc(__char) <= 38 THEN ' huruf ! - +
+    IF Key.Code = Key[__char] AND IF Key.Shift THEN
+      __correct_typing = TRUE
+    ELSE
+      __correct_typing = FALSE
+    ENDIF   
+  ELSE IF Asc(__char) >= 40 AND Asc(__char) <= 43 THEN ' huruf ! - +
+    IF Key.Code = Key[__char] AND IF Key.Shift THEN
+      __correct_typing = TRUE
+    ELSE
+      __correct_typing = FALSE
+    ENDIF   
+  ELSE IF (Asc(__char) = 58) OR (Asc(__char) = 60) OR (Asc(__char) = 62) OR (Asc(__char) = 63) OR (Asc(__char) = 64) OR (Asc(__char) = 94) OR (Asc(__char) = 95) OR (Asc(__char) = 126) OR (Asc(__char) = 123) OR (Asc(__char) = 124) OR (Asc(__char) = 125) THEN ' huruf ! - +
+    IF Key.Code = Key[__char] AND IF Key.Shift THEN
+      __correct_typing = TRUE
+    ELSE
+      __correct_typing = FALSE
+    ENDIF     
+  ELSE
+    RETURN
+  ENDIF
+
+checktype:
+  IF __correct_typing = TRUE THEN
+    '// if correct typing then mark next letter with blue color
+    IF __pos <= Len(__text)
+      WITH board__
+      .Select(__pos, 1)
+      .Format.Color = Color.Blue 
+      .Format.Font.Underline = TRUE
+      .Unselect
+      END WITH 
+    ENDIF 
+    
+    '// if error typing, mark old letter with gray colors
+    WITH board__
+    .Select(__pos - 1, 1)
+    IF __stop_type = FALSE THEN 
+      .Format.Color = &FF6600&
+    ELSE 
+      .Format.Color = Color.Gray
+    ENDIF 
+    .Format.Font.Underline = FALSE
+    .Unselect
+    END WITH 
+    
+    '// go to next letter
+    __pos = __pos + 1
+    '__type_sound.Play(0)
+    'info_char__.Foreground = &HFFFF00&
+   __stop_type = FALSE
+   
+  ELSE     '// user type wrong letter :(
+  
+    '// if user press shift or capslock button don't record it as error :(
+    IF Key.Code = 4128 THEN  'key shift
+      __stop_type = __stop_type
+      RETURN
+    ENDIF
+    IF Key.Code = 4132 THEN  'key capslock
+      __stop_type = __stop_type
+      'capslock_info
+      RETURN 
+    ENDIF 
+    
+    '// don't record again if user have error before
+    ' IF __stop_type = FALSE THEN
+    '   IF __mode_typoo = 1 THEN 
+    '       __error = __error + 1
+    '   ENDIF 
+    ' ENDIF
+    
+    __pos = __pos
+    __stop_type = TRUE
+    
+    '// don't show error information in tutorial mode
+    IF __mode_typoo = 0 THEN 
+      'char_error__.Text = Format(__error, "#,##")
+    ENDIF 
+    
+    '// show some error info with red color
+    'info_char__.Foreground = Color.Red
+    WITH board__
+    .Select(__pos - 1, 1)
+    .Format.Color = Color.Red 
+    .Format.Font.Underline = TRUE
+    .Unselect    
+    END WITH 
+  ENDIF 
+
+  IF __pos <= Len(__text) THEN 
+    __char = Mid(__text, __pos, 1)
+      map_virtual_keyboard(__char)
+  ELSE 
+    IF __mode_typoo = 1 THEN 
+      stop_tutor___Click
+    ELSE 
+      '// in tutorial mode, go to next tutorial
+      IF tuts_number < 15 THEN 
+        tuts_number = tuts_number + 1
+      ELSE 
+        tuts_number = 1
+      ENDIF 
+      load_basic_tutorial(tuts_number)
+      board__.Text = __text
+      Board_Init
+      Board_First_Char
+      IF (tuts_number > 1) AND (tuts_number < 2) THEN 
+        prev_tutor__.Enabled = TRUE
+        next_tutor__.Enabled = TRUE
+      ELSE IF (tuts_number <= 2) THEN 
+        prev_tutor__.Enabled = FALSE
+        next_tutor__.Enabled = TRUE
+      ELSE IF (tuts_number = 2) THEN 
+        next_tutor__.Enabled = FALSE
+        prev_tutor__.Enabled = TRUE
+      ENDIF 
+    ENDIF 
+  ENDIF 
+END
+
+PUBLIC SUB Board_Init()
+  __pos = 1
+'   __type_count = 0
+'   __error = 0
+  
+  WITH board__
+  .SelectAll
+  .Format.Color = Color.Black
+  .Format.Font.Underline = FALSE
+  .Format.Alignment = Align.Justify
+  .Refresh
+  .Select(__pos - 1, 1)
+  .Format.Color = Color.Blue
+  .Format.Font.Underline = TRUE
+  .Unselect
+  END WITH 
+  type_here__.SetFocus
+END
+
+PUBLIC SUB Board_First_Char()
+  __char = Mid(__text, __pos, 1)
+  map_virtual_keyboard(__char)
+END
+
+PUBLIC SUB prev_tutor___Click()
+  IF tuts_number = 2 THEN prev_tutor__.Enabled = FALSE
+  IF tuts_number < 2 THEN 
+    tuts_number = 1
+  ELSE 
+    tuts_number = tuts_number - 1
+    next_tutor__.Enabled = TRUE
+  ENDIF 
+  load_basic_tutorial(tuts_number)
+  board__.Text = __text
+  Board_Init
+  Board_First_Char
+END
+
+PUBLIC SUB next_tutor___Click()
+  IF tuts_number = 14 THEN next_tutor__.Enabled = FALSE
+  IF tuts_number > 15 THEN 
+    tuts_number = 15
+  ELSE 
+    tuts_number = tuts_number + 1
+    prev_tutor__.Enabled = TRUE
+  ENDIF 
+  load_basic_tutorial(tuts_number)
+  board__.Text = __text
+  Board_Init
+  Board_First_Char
+END
+
+PUBLIC SUB load_basic_tutorial(tuts AS Integer)
+
+  SELECT CASE tuts
+    CASE 1
+      __text = "aaa aaa aaa sss sss sss ddd ddd ddd ass ass ass add add add asd asd asd das das das ssd ssd ssd dad dad dad"
+    CASE 2
+      __text = "fff fff fff aff aff aff afs afs afs fas fas fas daf daf daf asf asf asf fss fss fss dff dff dff fad fad fad"
+    CASE 3
+      __text = ";;; ;;; ;;; lll lll lll kkk kkk kkk ;ll ;ll ;ll ;kk ;kk ;kk lkk lkk lkk ;lk ;lk ;lk ;kl ;kl ;kl kl; kl; kl;" 
+    CASE 4
+      __text = "jjj jjj jjj ;jj ;jj ;jj ;jk ;jk ;jk lkj lkj lkj jkl jkl jkl ;lj ;lj ;lj klj klj klj l;j l;j l;j k;j k;j k;j" 
+    CASE 5
+      __text = "asdf asdf asdf ;lkj ;lkj ;lkj as al ad ak af aj fa ka da la sa ja sl sd sk sf ls ds ks fs lf dk dl fl kl dd ss ff ll" 
+    CASE 6
+      __text = "aqaz aqaz aqaz aqaz swsx swsx swsx dedc dedc dedc dedc frfv frfv frfv aqaz aqaz aqaz aqaz swsx swsx swsx dedc dedc dedc dedc frfv frfv frfv" 
+    CASE 7
+      __text = "jujm jujm jujm jujm kik, kik, kik, kik, lol. lol. lol. lol. ;p;/ ;p;/ ;p;/ ;p;/ jujm jujm jujm jujm kik, kik, kik, kik, lol. lol. lol. lol. ;p;/ ;p;/ ;p;/ ;p;/" 
+    CASE 8
+      __text = "gtgb gtgb gtgb gtgb hyhn hyhn hyhn hyhn gtgb gtgb gtgb gtgb hyhn hyhn hyhn hyhn" 
+    CASE 9
+      __text = "aqaz swsx dedc frfv gtgb ;p;/ lol. kik, jujm hyhn aqaz swsx dedc frfv gtgb ;p;/ lol. kik, jujm hyhn" 
+    CASE 10
+      __text = "abcd efgh ijkl mnop qrst uvwx yzab abcd efgh ijkl mnop qrst uvwx yzab"
+    CASE 11
+      __text = "as al ad ak af aj fa ka da la sa ja sl sd sk sf ls ds ks fs de le ae ke se je fe ed el ea ek es ej ef ed lf dk dl fl kl ki ai li si di ji fi ia il is ik id ij if dd ee ss ff ll ei"
+    CASE 12
+      __text = "as os es us is an on en un in at ot et ut it ad od ed ud id sa so se su si na no ne nu ni ta to te tu ti ha ho he hu hi da do de du di au st oi sh oi ts ht oe nk ou nd ue ns ui th"
+    CASE 13
+      __text = "ag ac ar al ap at ay af ug uc ur ul up ut eg ec er el ep et ey ef og or ol op ot of ig ic ir il ip if ga ca ra la pa fa gu cu ru lu pu fu ge ce re le pe ye fe go co ro lo po yo fo gi ci ri li fi gn pl gh ld sy rd ty ct ft ch nc dy dr ph ng"
+    CASE 14
+      __text = "am aw av az ak ax ab um ub em ew ev ez ek eq ex om ow ov oz ok ob im iv iz ix ib ma wa va za ka ja xa ba mu ju qu bu me we ve ze ke je xe be mo wo vo zo ko jo bo mi wi vi zi ki xi bi xt sm sk sw kn ms nk wh tw ks wn dv"
+    CASE 15
+      __text = "ad ar an al am ab ee st ed er en el es em ex om on or un up id ic ir in im se sy le ly re ry ec fy ty de be my by bi di"
+  END SELECT 
+  __text = Trim(__text)  
+  
+END
+
+PUBLIC SUB init_virtual_hand()
+  j1__.Visible = FALSE
+  j2__.Visible = FALSE
+  j3__.Visible = FALSE
+  j4__.Visible = FALSE
+  j5__.Visible = FALSE
+  j6__.Visible = FALSE
+  j7__.Visible = FALSE
+  j8__.Visible = FALSE
+  j9__.Visible = FALSE
+  j10__.Visible = FALSE
+END
+
+PUBLIC SUB map_virtual_hand(hand AS Integer)
+  SELECT CASE hand
+    CASE 1
+      j1__.Visible = TRUE
+    CASE 2
+      j2__.Visible = TRUE
+    CASE 3
+      j3__.Visible = TRUE
+    CASE 4
+      j4__.Visible = TRUE
+    CASE 5
+      j5__.Visible = TRUE
+    CASE 6
+      j6__.Visible = TRUE
+    CASE 7
+      j7__.Visible = TRUE
+    CASE 8
+      j8__.Visible = TRUE
+    CASE 9
+      j9__.Visible = TRUE
+    CASE 10
+      j10__.Visible = TRUE
+  END SELECT 
+END
+
+PUBLIC SUB init_hand_caption()
+  p1__.Visible = FALSE
+  p2__.Visible = FALSE
+  p3__.Visible = FALSE
+  p4__.Visible = FALSE
+  p5__.Visible = FALSE
+  p6__.Visible = FALSE
+  p7__.Visible = FALSE
+  p8__.Visible = FALSE
+  p9__.Visible = FALSE
+  
+  WITH p9__
+    .Width = 30
+    .Height = 30
+  END WITH 
+
+  WITH p5__
+    .Width = 30
+    .Height = 30
+  END WITH 
+END
+
+PUBLIC SUB map_hand_caption(handcap AS Integer, capsmode AS Integer, charx AS String)
+  SELECT CASE handcap
+    CASE 1
+      p1__.Visible = TRUE
+      p1__.Caption = "space"
+    CASE 2
+      p2__.Visible = TRUE
+      p2__.Caption = charx
+    CASE 3
+      p3__.Visible = TRUE
+      p3__.Caption = charx
+    CASE 4
+      p4__.Visible = TRUE
+      p4__.Caption = charx
+    CASE 5
+      p5__.Visible = TRUE
+      IF capsmode = 0 THEN 
+        p5__.Caption = charx
+      ELSE 
+        p5__.Caption = "Shift"
+        WITH p5__
+          .Width = 63
+          .Height = 30
+        END WITH 
+      ENDIF 
+    CASE 6
+      p6__.Visible = TRUE
+      p6__.Caption = charx
+    CASE 7
+      p7__.Visible = TRUE
+      p7__.Caption = charx
+    CASE 8
+      p8__.Visible = TRUE
+      p8__.Caption = charx
+    CASE 9
+      p9__.Visible = TRUE
+      IF capsmode = 0 THEN 
+        p9__.Caption = charx
+      ELSE 
+        p9__.Caption = "Shift"
+        WITH p9__
+          .Width = 63
+          .Height = 30
+        END WITH 
+      ENDIF 
+  END SELECT  
+END
+
+PUBLIC SUB virtualkeyboard_training_color(mybutton AS Button, mycolor AS Integer)
+  mybutton.Background = mycolor
+  mybutton.Foreground = Color.TextForeground
+END
+
+PUBLIC SUB virtualkeyboard_color(mode AS Integer, mybutton AS Button)
+  SELECT CASE mode
+    CASE 0 '// default color
+      mybutton.Background = Color.White
+      mybutton.ForeColor = Color.Black
+    CASE 1 
+      mybutton.Background = Color.Red
+      mybutton.Foreground = Color.White
+  END SELECT 
+END
+
+PUBLIC SUB init_virtualkeyboard_color()
+  DIM c_yellow, c_green, c_orange, c_blue AS Integer
+
+  c_yellow = &HFFFF7F&
+  c_green = &H7FFF7F&
+  c_orange = &HFFBF7F&
+  c_blue = &H7FBFFF&
+
+  '// training mode
+  '// map yellow color  :: &HFFFF7F&
+  virtualkeyboard_training_color(b1, c_yellow)
+  virtualkeyboard_training_color(b2, c_yellow)
+  virtualkeyboard_training_color(b16, c_yellow)
+  virtualkeyboard_training_color(b30, c_yellow)
+  virtualkeyboard_training_color(b43, c_yellow)
+  
+  virtualkeyboard_training_color(b11, c_yellow)
+  virtualkeyboard_training_color(b25, c_yellow)
+  virtualkeyboard_training_color(b39, c_yellow)
+  virtualkeyboard_training_color(b52, c_yellow)
+  
+  virtualkeyboard_training_color(b12, c_yellow)
+  virtualkeyboard_training_color(b26, c_yellow)
+  virtualkeyboard_training_color(b40, c_yellow)
+  
+  virtualkeyboard_training_color(b13, c_yellow)
+  virtualkeyboard_training_color(b27, c_yellow)
+  
+  virtualkeyboard_training_color(b28, c_yellow)
+    
+  '// map green color :: &H7FFF7F&
+  virtualkeyboard_training_color(b3, c_green)
+  virtualkeyboard_training_color(b17, c_green)
+  virtualkeyboard_training_color(b31, c_green)
+  virtualkeyboard_training_color(b44, c_green)
+  
+  virtualkeyboard_training_color(b10, c_green)
+  virtualkeyboard_training_color(b24, c_green)
+  virtualkeyboard_training_color(b38, c_green)
+  virtualkeyboard_training_color(b51, c_green)
+    
+  '// map orange color :: &HFFBF7F&
+  virtualkeyboard_training_color(b4, c_orange)
+  virtualkeyboard_training_color(b18, c_orange)
+  virtualkeyboard_training_color(b32, c_orange)
+  virtualkeyboard_training_color(b45, c_orange)
+  
+  virtualkeyboard_training_color(b9, c_orange)
+  virtualkeyboard_training_color(b23, c_orange)
+  virtualkeyboard_training_color(b37, c_orange)
+  virtualkeyboard_training_color(b50, c_orange)
+  
+  '// map blue color :: &H7FBFFF&
+  virtualkeyboard_training_color(b5, c_blue)
+  virtualkeyboard_training_color(b6, c_blue)
+  virtualkeyboard_training_color(b7, c_blue)
+  virtualkeyboard_training_color(b8, c_blue)
+  virtualkeyboard_training_color(b19, c_blue)
+  virtualkeyboard_training_color(b20, c_blue)
+  virtualkeyboard_training_color(b21, c_blue)
+  virtualkeyboard_training_color(b22, c_blue)
+  virtualkeyboard_training_color(b33, c_blue)
+  virtualkeyboard_training_color(b34, c_blue)
+  virtualkeyboard_training_color(b35, c_blue)
+  virtualkeyboard_training_color(b36, c_blue)
+  virtualkeyboard_training_color(b46, c_blue)
+  virtualkeyboard_training_color(b47, c_blue)
+  virtualkeyboard_training_color(b48, c_blue)
+  virtualkeyboard_training_color(b49, c_blue)
+        
+  virtualkeyboard_color(0, b42)
+  virtualkeyboard_color(0, b53)
+  virtualkeyboard_color(0, b54)
+END
+
+PUBLIC SUB map_virtual_keyboard(char_ AS String)
+  ' I'm still not found yet how to optimize virtualkeyboard code
+  
+  init_virtual_hand
+  init_hand_caption
+  init_virtualkeyboard_color
+
+  SELECT CASE char_
+    CASE "a"
+      virtualkeyboard_color(1, b30)
+      map_virtual_hand(10)
+      map_hand_caption(9, 0, char_)
+    CASE "s"
+      virtualkeyboard_color(1, b31)
+      map_virtual_hand(9)
+      map_hand_caption(8, 0, char_)
+    CASE "d"
+      virtualkeyboard_color(1, b32)
+      map_virtual_hand(8)
+      map_hand_caption(7, 0, char_)
+    CASE "f"
+      virtualkeyboard_color(1, b33)
+      map_virtual_hand(7)
+      map_hand_caption(6, 0, char_)
+    CASE "g"
+      virtualkeyboard_color(1, b34)
+      map_virtual_hand(7)
+      map_hand_caption(6, 0, char_)
+    CASE "h"
+      virtualkeyboard_color(1, b35)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE "j"
+      virtualkeyboard_color(1, b36)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE "k"
+      virtualkeyboard_color(1, b37)
+      map_virtual_hand(3)
+      map_hand_caption(3, 0, char_)
+    CASE "l"
+      virtualkeyboard_color(1, b38)
+      map_virtual_hand(4)
+      map_hand_caption(4, 0, char_)
+    CASE ";"
+      virtualkeyboard_color(1, b39)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE ":"
+      virtualkeyboard_color(1, b39)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "'"
+      virtualkeyboard_color(1, b40)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE "\""
+      virtualkeyboard_color(1, b40)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "q"
+      virtualkeyboard_color(1, b16)
+      map_virtual_hand(10)
+      map_hand_caption(9, 0, char_)
+    CASE "w"
+      virtualkeyboard_color(1, b17)
+      map_virtual_hand(9)
+      map_hand_caption(8, 0, char_)
+    CASE "e"
+      virtualkeyboard_color(1, b18)
+      map_virtual_hand(8)
+      map_hand_caption(7, 0, char_)
+    CASE "r"
+      virtualkeyboard_color(1, b19)
+      map_virtual_hand(7)
+      map_hand_caption(6, 0, char_)
+    CASE "t"
+      virtualkeyboard_color(1, b20)
+      map_virtual_hand(7)
+      map_hand_caption(6, 0, char_)
+    CASE "y"
+      virtualkeyboard_color(1, b21)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE "u"
+      virtualkeyboard_color(1, b22)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE "i"
+      virtualkeyboard_color(1, b23)
+      map_virtual_hand(3)
+      map_hand_caption(3, 0, char_)
+    CASE "o"
+      virtualkeyboard_color(1, b24)
+      map_virtual_hand(4)
+      map_hand_caption(4, 0, char_)
+    CASE "p"
+      virtualkeyboard_color(1, b25)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE "[" 
+      virtualkeyboard_color(1, b26)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE "{"
+      virtualkeyboard_color(1, b26)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "]"
+      virtualkeyboard_color(1, b27)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE "}"
+      virtualkeyboard_color(1, b27)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "|"
+      virtualkeyboard_color(1, b28)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE Chr(92)
+      virtualkeyboard_color(1, b28)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE "z"
+      virtualkeyboard_color(1, b43)
+      map_virtual_hand(10)
+      map_hand_caption(9, 0, char_)
+    CASE "x"
+      virtualkeyboard_color(1, b44)
+      map_virtual_hand(9)
+      map_hand_caption(8, 0, char_)
+    CASE "c"
+      virtualkeyboard_color(1, b45)
+      map_virtual_hand(8)
+      map_hand_caption(7, 0, char_)
+    CASE "v"
+      virtualkeyboard_color(1, b46)
+      map_virtual_hand(7)
+      map_hand_caption(6, 0, char_)
+    CASE "b"
+      virtualkeyboard_color(1, b47)
+      map_virtual_hand(7)
+      map_hand_caption(6, 0, char_)
+    CASE "n"
+      virtualkeyboard_color(1, b48)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE "m"
+      virtualkeyboard_color(1, b49)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE ","
+      virtualkeyboard_color(1, b50)
+      map_virtual_hand(3)
+      map_hand_caption(3, 0, char_)
+    CASE "<"
+      virtualkeyboard_color(1, b50)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(3)
+      map_virtual_hand(10)
+      map_hand_caption(3, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "."
+      virtualkeyboard_color(1, b51)
+      map_virtual_hand(4)
+      map_hand_caption(4, 0, char_)
+    CASE ">"
+      virtualkeyboard_color(1, b51)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(4)
+      map_virtual_hand(10)
+      map_hand_caption(4, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE " "
+      virtualkeyboard_color(1, b54)
+      map_virtual_hand(1)
+      map_hand_caption(1, 0, char_)
+    CASE "/"
+      virtualkeyboard_color(1, b52)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE "?"
+      virtualkeyboard_color(1, b52)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "`"
+      virtualkeyboard_color(1, b1)
+      map_virtual_hand(10)
+      map_hand_caption(9, 0, char_)
+    CASE "~"
+      virtualkeyboard_color(1, b1)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(10)
+      map_virtual_hand(5)
+      map_hand_caption(9, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "1"
+      virtualkeyboard_color(1, b2)
+      map_virtual_hand(10)
+      map_hand_caption(9, 0, char_)
+    CASE "!"
+      virtualkeyboard_color(1, b2)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(10)
+      map_virtual_hand(5)
+      map_hand_caption(9, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "2"
+      virtualkeyboard_color(1, b3)
+      map_virtual_hand(9)
+      map_hand_caption(8, 0, char_)
+    CASE "@"
+      virtualkeyboard_color(1, b3)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(9)
+      map_virtual_hand(5)
+      map_hand_caption(8, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "3"
+      virtualkeyboard_color(1, b4)
+      map_virtual_hand(8)
+      map_hand_caption(7, 0, char_)
+    CASE "#"
+      virtualkeyboard_color(1, b4)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(8)
+      map_virtual_hand(5)
+      map_hand_caption(7, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "4"
+      virtualkeyboard_color(1, b5)
+      map_virtual_hand(7)
+      map_hand_caption(6, 0, char_)
+    CASE "$"
+      virtualkeyboard_color(1, b5)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "5"
+      virtualkeyboard_color(1, b6)
+      map_virtual_hand(7)
+    CASE "%"
+      virtualkeyboard_color(1, b6)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "6"
+      virtualkeyboard_color(1, b7)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE "^"
+      virtualkeyboard_color(1, b7)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "7"
+      virtualkeyboard_color(1, b8)
+      map_virtual_hand(2)
+      map_hand_caption(2, 0, char_)
+    CASE "&"
+      virtualkeyboard_color(1, b8)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "8"
+      virtualkeyboard_color(1, b9)
+      map_virtual_hand(3)
+      map_hand_caption(3, 0, char_)
+    CASE "*"
+      virtualkeyboard_color(1, b9)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(3)
+      map_virtual_hand(10)
+      map_hand_caption(3, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "9"
+      virtualkeyboard_color(1, b10)
+      map_virtual_hand(4)
+      map_hand_caption(4, 0, char_)
+    CASE "("
+      virtualkeyboard_color(1, b10)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(4)
+      map_virtual_hand(10)
+      map_hand_caption(4, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "0"
+      virtualkeyboard_color(1, b11)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE ")"
+      virtualkeyboard_color(1, b11)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "-"
+      virtualkeyboard_color(1, b12)
+      map_virtual_hand(5)
+    CASE "_"
+      virtualkeyboard_color(1, b12)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "="
+      virtualkeyboard_color(1, b13)
+      map_virtual_hand(5)
+      map_hand_caption(5, 0, char_)
+    CASE "+"
+      virtualkeyboard_color(1, b13)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "A"
+      virtualkeyboard_color(1, b30)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(10)
+      map_virtual_hand(5)
+      map_hand_caption(9, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "S"
+      virtualkeyboard_color(1, b31)
+      virtualkeyboard_color(1, b53)    
+      map_virtual_hand(9)
+      map_virtual_hand(5)
+      map_hand_caption(8, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "D"
+      virtualkeyboard_color(1, b32)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(8)
+      map_virtual_hand(5)
+      map_hand_caption(7, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "F"
+      virtualkeyboard_color(1, b33)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "G"
+      virtualkeyboard_color(1, b34)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "H"
+      virtualkeyboard_color(1, b35)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "J"
+      virtualkeyboard_color(1, b36)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "K"
+      virtualkeyboard_color(1, b37)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(3)
+      map_virtual_hand(10)
+      map_hand_caption(3, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "L"
+      virtualkeyboard_color(1, b38)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(4)
+      map_virtual_hand(10)
+      map_hand_caption(4, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "Q"
+      virtualkeyboard_color(1, b16)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(10)
+      map_virtual_hand(5)
+      map_hand_caption(9, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "W"
+      virtualkeyboard_color(1, b17)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(9)
+      map_virtual_hand(5)
+      map_hand_caption(8, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "E"
+      virtualkeyboard_color(1, b18)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(8)
+      map_virtual_hand(5)
+      map_hand_caption(7, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "R"
+      virtualkeyboard_color(1, b19)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "T"
+      virtualkeyboard_color(1, b20)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(5, 1, char_)
+    CASE "Y"
+      virtualkeyboard_color(1, b21)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "U"
+      virtualkeyboard_color(1, b22)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "I"
+      virtualkeyboard_color(1, b23)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(3)
+      map_virtual_hand(10)
+      map_hand_caption(3, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "O"
+      virtualkeyboard_color(1, b24)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(4)
+      map_virtual_hand(10)
+      map_hand_caption(4, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "P"
+      virtualkeyboard_color(1, b25)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(5)
+      map_virtual_hand(10)
+      map_hand_caption(5, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "Z"
+      virtualkeyboard_color(1, b43)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(10)
+      map_virtual_hand(5)
+      map_hand_caption(9, 0, char_)
+      map_hand_caption(4, 1, char_)
+    CASE "X"
+      virtualkeyboard_color(1, b44)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(9)
+      map_virtual_hand(5)
+      map_hand_caption(8, 0, char_)
+      map_hand_caption(4, 1, char_)
+    CASE "C"
+      virtualkeyboard_color(1, b45)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(8)
+      map_virtual_hand(5)
+      map_hand_caption(7, 0, char_)
+      map_hand_caption(4, 1, char_)
+    CASE "V"
+      virtualkeyboard_color(1, b46)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(4, 1, char_)
+    CASE "B"
+      virtualkeyboard_color(1, b47)
+      virtualkeyboard_color(1, b53)
+      map_virtual_hand(7)
+      map_virtual_hand(5)
+      map_hand_caption(6, 0, char_)
+      map_hand_caption(4, 1, char_)
+    CASE "N"
+      virtualkeyboard_color(1, b48)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+    CASE "M"
+      virtualkeyboard_color(1, b49)
+      virtualkeyboard_color(1, b42)
+      map_virtual_hand(2)
+      map_virtual_hand(10)
+      map_hand_caption(2, 0, char_)
+      map_hand_caption(9, 1, char_)
+   END SELECT
+END
+
+PUBLIC SUB open_tutor___Click()
+  DIM texttemp AS String
+  
+  __text = ""
+  texttemp = ""
+  Dialog.Title = "Pilih berkas latihan..."
+  Dialog.Filter = ["*", "Text File"]
+  Dialog.Path = User.home 
+  IF Dialog.OpenFile(FALSE) THEN RETURN
+  __text = Trim((File.Load(Dialog.Path)))
+  texttemp = __text
+  __text = Replace(__text, "<", "&#60 ")
+  __text = Replace(__text, ">", "&#62 ")
+  board__.Text = __text
+  __text = texttemp
+  texttemp = ""
+END
+
+PUBLIC SUB Form_KeyPress()
+  capslock_info
+END
+
+PUBLIC SUB Form_Close()
+  FMain.Show
+END
+
+PUBLIC SUB typoo_mode___Click()
+
+  IF typoo_mode__.Value = TRUE
+    __mode_typoo = 0
+    tuts_number = 1
+    load_basic_tutorial(tuts_number)
+    board__.Text = __text
+    Board_Init
+    Board_First_Char 
+    default_button_state(0)
+  ELSE  
+    __mode_typoo = 1
+    __text = ""
+    board__.Text = __text
+    init_hand_caption
+    init_virtual_hand
+    init_virtualkeyboard_color
+    default_button_state(1)
+  ENDIF   
+
+END
+
+PUBLIC SUB Form_Show()
+  typoo_mode___Click
+END

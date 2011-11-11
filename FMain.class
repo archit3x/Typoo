@@ -1,0 +1,81 @@
+' Gambas class file
+
+' Typoo --------------------------------------------
+' Small software to learn fast typing
+' 
+' Developers: --------------------------------------------------------
+' Programmer : Kusuma Negara <deny.krishna108@gmail.com>
+' Artwork Designer : Hamzah Fahrudin <karangdesaku@yahoo.co.id>
+' Package Maintainer : Damar Riyadi <tldm217@gmail.com>
+' License : GPL GNU General Public License Version 2
+'
+' coded in Gambas 2.22 on Kubuntu 11.10 machine
+'
+' ---------------------------------------------------------------------------------------
+' "Diluar sana orang bisa berbagi "emas". Meski saya cuma bisa berbagi "kerikil",
+' setidaknya hal itu tidak mengurangi semangat berbagi saya untuk teman - teman
+' semua"
+' 
+' Semoga Aplikasi ini bisa bermanfaat untuk dunia pendidikan di Indonesia :)
+' 
+' 
+' Thanks to:
+' GAMBAS Creator
+' ---------------------------------------------------------------------------------------
+
+PUBLIC latihan_ngetik AS String = " Pada mode ini anda akan dipandu untuk belajar ngetik dengan virtual keyboard yang berwarna dan jari-jari tangan virtual sehingga memudahkan anda untuk menghafal posisi tombol keyboard"
+PUBLIC mahir_ngetik AS String = " Pada mode ini anda akan disimulasikan seperti mengetik yang sebenarnya (kalau salah ketik harus tekan tombol backspace). Dengan fitur kecepatan mengetik, keakuratan mengetik, serta kesalahan mengetik."
+
+PUBLIC SUB _new()
+  mode_latihan___Click
+  ME.Center
+  ME.Show
+END
+
+PUBLIC SUB mulai___Click()
+  IF mode_latihan__.Value = TRUE THEN 
+    latihan.Show
+    ME.Hide
+  ELSE IF mode_mahir__.Value = TRUE THEN 
+    mahir.Show
+    ME.Hide
+  ENDIF 
+  
+END
+
+PUBLIC SUB mode_latihan___Click()
+  info__.Text = latihan_ngetik
+END
+
+PUBLIC SUB mode_mahir___Click()
+  info__.Text = mahir_ngetik
+END
+
+PUBLIC SUB about___Click()
+DIM about_info AS String
+  about_info = "<b><u>Typoo versi 1.0 RC</u></b>"
+  about_info = about_info & "<br> Program untuk belajar ngetik cepat"
+  about_info = about_info & "<br> Hak Cipta (c) 2011 Kusuma Negara"
+  about_info = about_info & "<br> Lisensi : GNU GPL v.2"
+  about_info = about_info & "<br><br> Program ini menggunakan beberapa "
+  about_info = about_info & "<br>   artwork milik Faenza icon."
+  about_info = about_info & "<br><br><b><u>Pengembang :</u></b>"
+  about_info = about_info & "<br>- Kusuma Negara (Programmer)<br>(<i>deny.krishna108@gmail.com</i>)"
+  about_info = about_info & "<br><br>- Fahrudin Hamzah (Artwork Designer)<br>(<i>karangdesaku@yahoo.co.id</i>)"
+  about_info = about_info & "<br><br>- Damar Riyadi (Package maintainer)<br>(<i>tldm217@gmail.com</i>)"
+  about_info = about_info & "<br><br><b><u>Terima kasih kepada :</u></b>"
+  about_info = about_info & "<br>- ArzonLinus <br>- Lisnux <br>- Komunitas ubuntu-indonesia.com" 
+  about_info = about_info & "<br><br><b><u>Dukung kami :</u></b>"
+  about_info = about_info & "<br>- Melaporkan bug program"
+  about_info = about_info & "<br>- Improvisasi code program "
+  about_info = about_info & "<br>- Membuat file latihan"
+  
+  info__.Text = about_info
+
+END
+
+PUBLIC SUB Form_Open()
+
+  
+
+END
