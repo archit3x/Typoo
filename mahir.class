@@ -576,7 +576,7 @@ PRIVATE SUB SaveConfig()
   
 END
 
-PRIVATE FUNCTION DirPath(OPTIONAL filePath AS String = "") AS String
+PRIVATE FUNCTION DirPath(filePath AS String) AS String
   
   DIM filename AS String
   DIM length AS Integer
