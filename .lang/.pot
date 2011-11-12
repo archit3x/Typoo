@@ -22,7 +22,7 @@ msgstr ""
 msgid "Typoo 1.0 RC"
 msgstr ""
 
-#: FMain.class:106 latihan.class:1957 mahir.class:539
+#: FMain.class:106 latihan.class:1957 mahir.class:739
 msgid "Mulai"
 msgstr ""
 
@@ -308,7 +308,7 @@ msgstr ""
 msgid "Next Letter must you type"
 msgstr ""
 
-#: latihan.class:1826 mahir.class:722
+#: latihan.class:1826 mahir.class:922
 msgid "g"
 msgstr ""
 
@@ -324,7 +324,7 @@ msgstr ""
 msgid "Next Tutorial"
 msgstr ""
 
-#: latihan.class:1967 mahir.class:548
+#: latihan.class:1967 mahir.class:748
 msgid "Berhenti"
 msgstr ""
 
@@ -332,94 +332,118 @@ msgstr ""
 msgid "Buka berkas latihan"
 msgstr ""
 
-#: latihan.class:1994 mahir.class:795
+#: latihan.class:1994 mahir.class:995
 msgid "Caps Lock AKTIF"
 msgstr ""
 
-#: mahir.class:492
+#: mahir.class:663
 msgid "Typoo - Mode Mahir"
 msgstr ""
 
-#: mahir.class:498
+#: mahir.class:669
 msgid "Berkas"
 msgstr ""
 
-#: mahir.class:501
+#: mahir.class:672
 msgid "Buka berkas latihan..."
 msgstr ""
 
-#: mahir.class:510
+#: mahir.class:677
+msgid "Buka berkas sebelumnya"
+msgstr ""
+
+#: mahir.class:680
+msgid "1"
+msgstr ""
+
+#: mahir.class:685
+msgid "2"
+msgstr ""
+
+#: mahir.class:690
+msgid "3"
+msgstr ""
+
+#: mahir.class:695
+msgid "4"
+msgstr ""
+
+#: mahir.class:700
+msgid "5"
+msgstr ""
+
+#: mahir.class:710
 msgid "Keluar"
 msgstr ""
 
-#: mahir.class:568
+#: mahir.class:768
 msgid "Statistik"
 msgstr ""
 
-#: mahir.class:582
+#: mahir.class:782
 msgid "Jumlah huruf yang diketik"
 msgstr ""
 
-#: mahir.class:583
+#: mahir.class:783
 msgid "0"
 msgstr ""
 
-#: mahir.class:592
+#: mahir.class:792
 msgid "Jumlah kesalahan mengetik"
 msgstr ""
 
-#: mahir.class:601
+#: mahir.class:801
 msgid "Kecepatan"
 msgstr ""
 
-#: mahir.class:610
+#: mahir.class:810
 msgid "Huruf"
 msgstr ""
 
-#: mahir.class:619
+#: mahir.class:819
 msgid "Salah"
 msgstr ""
 
-#: mahir.class:638
+#: mahir.class:838
 msgid "00:00:00"
 msgstr ""
 
-#: mahir.class:656
+#: mahir.class:856
 msgid "Wkt. Mulai"
 msgstr ""
 
-#: mahir.class:665
+#: mahir.class:865
 msgid "Wkt. Selesai"
 msgstr ""
 
-#: mahir.class:674
+#: mahir.class:874
 msgid "Huruf per menit"
 msgstr ""
 
-#: mahir.class:683
+#: mahir.class:883
 msgid "Kecepatan mengetik anda"
 msgstr ""
 
-#: mahir.class:693
+#: mahir.class:893
 msgid ":"
 msgstr ""
 
-#: mahir.class:721
+#: mahir.class:921
 msgid "Huruf selanjutnya yang harus diketik"
 msgstr ""
 
-#: mahir.class:730
+#: mahir.class:930
 msgid "Huruf Selanjutnya"
 msgstr ""
 
-#: mahir.class:761
+#: mahir.class:961
 msgid "Keakuratan :"
 msgstr ""
 
-#: mahir.class:770
+#: mahir.class:970
 msgid "Keakuratan mengetik"
 msgstr ""
 
-#: mahir.class:771
+#: mahir.class:971
 msgid "0 %"
 msgstr ""

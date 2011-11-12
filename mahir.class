@@ -46,9 +46,16 @@ PUBLIC tuts_number AS Integer
 PUBLIC key_function AS String = "4100,4097,4096,4144,4145,4146,4147,4148,4149,4150,4151,4152,4153,4154,4155,4134,4104,4102,4112,4118,4103,4113,4119,4114,4115,4117,4116,4133,4129,4179,4131"
 PUBLIC func_array AS String[]
 
+PRIVATE CONST MaxRecentFiles AS Integer = 5
+PRIVATE RecentFiles AS NEW String[]
+PRIVATE RecentMenus AS NEW Object[]
+PRIVATE FirstLoad AS Boolean = FALSE
+PRIVATE __lastOpenDir AS String
+
 PUBLIC SUB _new()
   
   init_key_function
+  LoadConfig
   ME.Center
   ME.Show
   
@@ -284,22 +291,7 @@ END
 
 PUBLIC SUB mn_open_Click()
 
-  DIM texttemp AS String
-  
-  __text = ""
-  texttemp = ""
-  Dialog.Title = "Pilih berkas latihan..."
-  Dialog.Filter = ["*", "Text File"]
-  Dialog.Path = User.home 
-  IF Dialog.OpenFile(FALSE) THEN RETURN
-  __text = Trim((File.Load(Dialog.Path)))
-  texttemp = __text
-  __text = Replace(__text, "<", "&#60 ")
-  __text = Replace(__text, ">", "&#62 ")
-  board__.Text = __text
-  __text = texttemp
-  texttemp = ""
-  char_count__.Text = Format(Len(__text), "#,##")
+  OpenFileTutorial
 
 END
 
@@ -379,6 +371,7 @@ END
 
 PUBLIC SUB Form_Close()
   Timer1.Enabled = FALSE
+  SaveConfig
   FMain.Show
 
 END
@@ -432,4 +425,176 @@ PUBLIC SUB mn_exit_Click()
 
   ME.Close
 
+END
+
+PUBLIC SUB mn_recent1_Click()
+
+  IF FirstLoad = FALSE THEN 
+    OpenFileTutorial(RecentFiles[0])
+    FirstLoad = TRUE
+  ENDIF 
+
+END
+
+PUBLIC SUB mn_recent2_Click()
+
+  OpenFileTutorial(RecentFiles[1])
+
+END
+
+PUBLIC SUB mn_recent3_Click()
+
+  OpenFileTutorial(RecentFiles[2])
+
+END
+
+PUBLIC SUB mn_recent4_Click()
+
+  OpenFileTutorial(RecentFiles[3])
+
+END
+
+PUBLIC SUB mn_recent5_Click()
+
+  OpenFileTutorial(RecentFiles[4])
+
+END
+
+PRIVATE SUB OpenFileTutorial(OPTIONAL filePath AS String = "")
+  
+  DIM texttemp AS String
+  DIM iIndex AS Integer
+    
+  __text = ""
+  texttemp = ""
+  iIndex = -1 ' not in recent files
+  
+  IF filePath <> "" THEN 
+    IF Exist(filePath) = FALSE THEN 
+      Message.Warning("File not exist, please choose another file.", "OK")
+      filePath = ""
+    ENDIF 
+  ENDIF 
+  
+  IF filePath = "" THEN 
+    Dialog.Title = "Select tutorial file..."
+    Dialog.Filter = ["*", "Text File"]
+    
+    IF Exist(__lastOpenDir) = FALSE THEN 
+      __lastOpenDir = User.Home
+    ENDIF 
+    
+    Dialog.Path = __lastOpenDir
+    IF Dialog.OpenFile(FALSE) THEN 
+      RETURN
+    ENDIF 
+    
+    filePath = Dialog.Path 
+  ENDIF 
+  
+  IF RecentFiles.Exist(filePath) THEN 
+      iIndex = RecentFiles.Find(filePath)
+      IF iIndex > 0 THEN 
+        RecentFiles.Remove(iIndex)
+      ENDIF 
+  ENDIF
+  
+  IF iIndex = -1 AND RecentFiles.Count = 0 THEN
+    RecentFiles.Add(filePath)
+  ELSE IF (iIndex = -1 AND RecentFiles.Count > 0) OR iIndex > 0 THEN 
+    RecentFiles.Add(filePath, 0)
+  ENDIF 
+  
+  IF RecentFiles.Count > MaxRecentFiles THEN ' make sure RecentFiles.count is only 5
+    RecentFiles.Pop()
+  ENDIF 
+  
+  IF iIndex = -1 OR iIndex > 0 THEN
+    RearrangeSubMenuRecentFiles
+  ENDIF 
+  
+  IF mn_recentFiles.Enabled = FALSE THEN
+    mn_recentFiles.Enabled = TRUE
+  ENDIF 
+  
+  __lastOpenDir = DirPath(filePath)
+  __text = Trim((File.Load(filePath)))
+  texttemp = __text
+  __text = Replace(__text, "<", "&#60 ")
+  __text = Replace(__text, ">", "&#62 ")
+  board__.Text = __text
+  __text = texttemp
+  texttemp = ""
+  char_count__.Text = Format(Len(__text), "#,##")
+  
+END
+
+
+PRIVATE SUB LoadConfig()
+  
+  DIM filePath AS String
+  DIM i AS Integer
+  
+  __lastOpenDir = Settings["Config/LastOpenDir", User.Home]
+  IF Exist(__lastOpenDir) = FALSE THEN __lastOpenDir = User.Home
+  
+  FOR i = 1 TO MaxRecentFiles STEP 1
+    filePath = Settings["RecentFiles/File" & i, ""]
+    IF Len(filePath) > 0 THEN 
+      RecentFiles.Add(filePath)
+    ELSE 
+      BREAK 
+    ENDIF 
+  NEXT
+  
+  RecentMenus.Add(mn_recent1)
+  RecentMenus.Add(mn_recent2)
+  RecentMenus.Add(mn_recent3)
+  RecentMenus.Add(mn_recent4)
+  RecentMenus.Add(mn_recent5)
+  
+  IF RecentFiles.Count > 0 THEN 
+    mn_recentFiles.Enabled = TRUE
+    FOR i = 0 TO RecentFiles.Count - 1 STEP 1
+      RecentMenus[i].Text = RecentFiles[i]
+    NEXT 
+  ELSE 
+    mn_recentFiles.Enabled = FALSE
+  ENDIF 
+  
+  RearrangeSubMenuRecentFiles
+  
+END
+
+PRIVATE SUB SaveConfig()
+  
+  DIM i AS Integer
+  Settings["Config/LastOpenDir"] = __lastOpenDir
+  FOR i = 1 TO RecentFiles.Count STEP 1
+    Settings["RecentFiles/File" & i] = RecentFiles[i - 1]
+  NEXT 
+  
+END
+
+PRIVATE FUNCTION DirPath(OPTIONAL filePath AS String = "") AS String
+  
+  DIM filename AS String
+  DIM length AS Integer
+  DIM result AS String
+  
+  filename = File.Name(filePath)
+  length = RInStr(filePath, filename) - 1
+  result = Left(filePath, length)
+  RETURN result
+  
+END
+
+PRIVATE FUNCTION RearrangeSubMenuRecentFiles()
+  
+  DIM i AS Integer
+  FOR i = 0 TO RecentFiles.Count - 1 STEP 1 
+    RecentMenus[i].Text = RecentFiles[i]
+    IF RecentMenus[i].Visible = FALSE THEN RecentMenus[i].Visible = TRUE
+  NEXT 
+  
 END

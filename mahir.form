@@ -13,6 +13,29 @@
       Text = ("Buka berkas latihan...")
       Picture = Picture["images/document-open.png"]
     }
+    { mn_recentfiles Menu
+      Text = ("Buka berkas sebelumnya")
+      { mn_recent1 Menu
+        Text = ("1")
+        Visible = False
+      }
+      { mn_recent2 Menu
+        Text = ("2")
+        Visible = False
+      }
+      { mn_recent3 Menu
+        Text = ("3")
+        Visible = False
+      }
+      { mn_recent4 Menu
+        Text = ("4")
+        Visible = False
+      }
+      { mn_recent5 Menu
+        Text = ("5")
+        Visible = False
+      }
+    }
     { spr Menu
       Text = ("")
     }
