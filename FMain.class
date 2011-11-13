@@ -44,15 +44,20 @@ PUBLIC SUB mulai___Click()
 END
 
 PUBLIC SUB mode_latihan___Click()
+  mulai__.Visible = TRUE
   info__.Text = latihan_ngetik
 END
 
 PUBLIC SUB mode_mahir___Click()
+  mulai__.Visible = TRUE
   info__.Text = mahir_ngetik
 END
 
-PUBLIC SUB about___Click()
-DIM about_info AS String
+PUBLIC SUB about___Click() 
+  DIM about_info AS String
+  
+  mulai__.Visible = FALSE
+  
   about_info = "<b><u>Typoo versi 1.0 RC</u></b>"
   about_info = about_info & "<br> Program untuk belajar ngetik cepat"
   about_info = about_info & "<br> Hak Cipta (c) 2011 Kusuma Negara"
