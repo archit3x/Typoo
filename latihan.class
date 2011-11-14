@@ -24,16 +24,7 @@
 ' GAMBAS Creator
 ' ---------------------------------------------------------------------------------------
 
-'PUBLIC __text AS String
-'PUBLIC __start_type AS Boolean
-'PUBLIC __pos AS Integer
-'PUBLIC __char AS String
-'PUBLIC __stop_type AS Boolean
-'PUBLIC __correct_typing AS Boolean
-'PUBLIC __is_capslock_on AS Boolean
-
 PUBLIC __mode_typoo AS Integer
-'PUBLIC tuts_number AS Integer
 
 PUBLIC SUB _new()
   LoadConfig

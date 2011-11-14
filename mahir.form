@@ -6,7 +6,6 @@
   Text = ("Typoo - Mode Mahir")
   Icon = Picture["typoo-icon.png"]
   Border = Window.Fixed
-  Minimized = True
   { berkas Menu
     Text = ("Berkas")
     { mn_open Menu

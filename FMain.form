@@ -6,7 +6,6 @@
   Text = ("Typoo 1.0 RC")
   Icon = Picture["typoo-icon.png"]
   Border = Window.Fixed
-  Minimized = True
   { mulai__ Button
     MoveScaled(55,37,12,4)
     Text = ("Mulai")
