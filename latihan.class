@@ -24,24 +24,22 @@
 ' GAMBAS Creator
 ' ---------------------------------------------------------------------------------------
 
-PUBLIC __text AS String         
-PUBLIC __start_type AS Boolean       
-PUBLIC __pos AS Integer
-PUBLIC __char AS String
-PUBLIC __stop_type AS Boolean
-PUBLIC __correct_typing AS Boolean
-PUBLIC __is_capslock_on AS Boolean
+'PUBLIC __text AS String
+'PUBLIC __start_type AS Boolean
+'PUBLIC __pos AS Integer
+'PUBLIC __char AS String
+'PUBLIC __stop_type AS Boolean
+'PUBLIC __correct_typing AS Boolean
+'PUBLIC __is_capslock_on AS Boolean
 
 PUBLIC __mode_typoo AS Integer
-PUBLIC tuts_number AS Integer
-
-PUBLIC key_function AS String = "4100,4097,4096,4144,4145,4146,4147,4148,4149,4150,4151,4152,4153,4154,4155,4134,4104,4102,4112,4118,4103,4113,4119,4114,4115,4117,4116,4133,4129,4179,4131"
-PUBLIC func_array AS String[]
+'PUBLIC tuts_number AS Integer
 
 PUBLIC SUB _new()
+  LoadConfig
+  mdlGlobal.reset
   init_virtualkeyboard_color
   type_here__.SetFocus
-  init_key_function
   typoo_mode__.Value = TRUE
   ME.Center
   ME.Show
@@ -79,30 +77,26 @@ PUBLIC SUB default_button_state(mode AS Integer)
   END SELECT 
 END
 
-PUBLIC SUB init_key_function()
-  func_array = Split(key_function, ",")
-END
-
 PUBLIC SUB board___GotFocus()
   type_here__.SetFocus
 END
 
 PUBLIC SUB start_tutor___Click()
-  IF __text = "" THEN 
+  IF mdlGlobal.text = "" THEN 
     Message.Error("Silahkan buka berkas latihan")
   ELSE 
-    __start_type = TRUE
+    mdlGlobal.start_type = TRUE
     start_tutor__.Enabled = FALSE
     stop_tutor__.Enabled = TRUE
     open_tutor__.Enabled = FALSE
-    board__.Text = __text
+    board__.Text = mdlGlobal.text
     Board_Init
     Board_First_Char 
   ENDIF 
 END
 
 PUBLIC SUB stop_tutor___Click()
-  __start_type = FALSE
+  mdlGlobal.start_type = FALSE
   start_tutor__.Enabled = TRUE
   stop_tutor__.Enabled = FALSE
   open_tutor__.Enabled = TRUE
@@ -120,13 +114,13 @@ PUBLIC SUB detect_capslock()
   
   SELECT iKeyLocks
   CASE 0
-    __is_capslock_on = FALSE
+    mdlGlobal.is_capslock_on = FALSE
   CASE 1
-    __is_capslock_on = TRUE
+    mdlGlobal.is_capslock_on = TRUE
   CASE 2
-    __is_capslock_on = FALSE
+    mdlGlobal.is_capslock_on = FALSE
   CASE 3
-    __is_capslock_on = TRUE
+    mdlGlobal.is_capslock_on = TRUE
   END SELECT 
 END
 
@@ -143,7 +137,7 @@ END
 PUBLIC SUB capslock_info()
   'detect caps lock
   detect_capslock
-  IF __is_capslock_on = TRUE THEN 
+  IF mdlGlobal.is_capslock_on = TRUE THEN 
     caps_indicator(TRUE)
   ELSE 
     caps_indicator(FALSE)
@@ -155,99 +149,97 @@ DIM i AS Integer
 
   'Case sensitive key code still not supported by Gambas
   IF __mode_typoo = 1 THEN 
-    IF __start_type = FALSE THEN 
+    IF mdlGlobal.start_type = FALSE THEN 
       Message.Error("Silahkan klik tombol Mulai untuk memulai latihan")
       RETURN 
     ENDIF 
-  ENDIF   
+  ENDIF 
   
 
   ' Block some key function
-  FOR i = 0 TO func_array.Max
-    IF func_array[i] = Str(Key.Code) THEN 
-      type_here__.SetFocus
-      STOP EVENT 
-      RETURN 
-    ENDIF 
-  NEXT   
+  IF mdlGlobal.func_array.Exist(Key.Code) THEN 
+    type_here__.SetFocus
+    STOP EVENT 
+    RETURN 
+  ENDIF 
 
   capslock_info
   
-  __char = Mid(__text, __pos, 1)
-  IF Asc(__char) >= 97 AND Asc(__char) <= 122 THEN     ' letter a - z
+  mdlGlobal.char = Mid(mdlGlobal.text, mdlGlobal.pos, 1)
+  IF Asc(mdlGlobal.char) >= 97 AND Asc(mdlGlobal.char) <= 122 THEN     ' letter a - z
     detect_capslock
-    IF __is_capslock_on = TRUE THEN 
-      __correct_typing = FALSE
+    IF mdlGlobal.is_capslock_on = TRUE THEN 
+      mdlGlobal.correct_typing = FALSE
       'RETURN
       GOTO checktype
     ENDIF 
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = FALSE
-    ELSE IF Key.Code = Key[__char] THEN 
-      __correct_typing = TRUE
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = FALSE
+    ELSE IF Key.Code = Key[mdlGlobal.char] THEN 
+      mdlGlobal.correct_typing = TRUE
     ELSE 
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF 
-  ELSE IF Asc(__char) >= 65 AND Asc(__char) <= 90 THEN ' letter A - Z
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
+  ELSE IF Asc(mdlGlobal.char) >= 65 AND Asc(mdlGlobal.char) <= 90 THEN ' letter A - Z
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
       detect_capslock
-      IF __is_capslock_on = FALSE THEN
-        __correct_typing = TRUE
+      IF mdlGlobal.is_capslock_on = FALSE THEN
+        mdlGlobal.correct_typing = TRUE
       ELSE 
-        __correct_typing = FALSE
+        mdlGlobal.correct_typing = FALSE
       ENDIF 
     ELSE
       detect_capslock
-      IF __is_capslock_on = TRUE THEN
-        IF (Key.Code) = Key[__char] THEN
-          __correct_typing = TRUE
+      IF mdlGlobal.is_capslock_on = TRUE THEN
+        IF (Key.Code) = Key[mdlGlobal.char] THEN
+          mdlGlobal.correct_typing = TRUE
         ELSE
-          __correct_typing = FALSE
+          mdlGlobal.correct_typing = FALSE
         ENDIF
       ELSE
-        __correct_typing = FALSE
+        mdlGlobal.correct_typing = FALSE
       ENDIF
     ENDIF
-  ELSE IF Asc(__char) >= 44 AND Asc(__char) <= 57 THEN     ' number 0 - 9 dan some character
-    IF (Key.Code) = Key[__char] THEN
-      __correct_typing = TRUE
+  ELSE IF Asc(mdlGlobal.char) >= 44 AND Asc(mdlGlobal.char) <= 57 THEN     ' number 0 - 9 dan some character
+    IF (Key.Code) = Key[mdlGlobal.char] THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF
-  ELSE IF (Asc(__char) = 32) OR (Asc(__char) = 39) OR (Asc(__char) = 59) OR (Asc(__char) = 61) OR (Asc(__char) = 91) OR (Asc(__char) = 92) OR (Asc(__char) = 93) OR (Asc(__char) = 96) THEN ' spasi 59 61 91 92 93 96 
-    IF (Key.Code) = Key[__char] THEN
-      __correct_typing = TRUE
+  ELSE IF (Asc(mdlGlobal.char) = 32) OR (Asc(mdlGlobal.char) = 39) OR (Asc(mdlGlobal.char) = 59) OR (Asc(mdlGlobal.char) = 61) OR (Asc(mdlGlobal.char) = 91) OR (Asc(mdlGlobal.char) = 92) OR (Asc(mdlGlobal.char) = 93) OR (Asc(mdlGlobal.char) = 96) THEN ' spasi 59 61 91 92 93 96 
+    IF (Key.Code) = Key[mdlGlobal.char] THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF
-  ELSE IF Asc(__char) >= 33 AND Asc(__char) <= 38 THEN ' huruf ! - +
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = TRUE
+  ELSE IF Asc(mdlGlobal.char) >= 33 AND Asc(mdlGlobal.char) <= 38 THEN ' huruf ! - +
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF   
-  ELSE IF Asc(__char) >= 40 AND Asc(__char) <= 43 THEN ' huruf ! - +
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = TRUE
+  ELSE IF Asc(mdlGlobal.char) >= 40 AND Asc(mdlGlobal.char) <= 43 THEN ' huruf ! - +
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF   
-  ELSE IF (Asc(__char) = 58) OR (Asc(__char) = 60) OR (Asc(__char) = 62) OR (Asc(__char) = 63) OR (Asc(__char) = 64) OR (Asc(__char) = 94) OR (Asc(__char) = 95) OR (Asc(__char) = 126) OR (Asc(__char) = 123) OR (Asc(__char) = 124) OR (Asc(__char) = 125) THEN ' huruf ! - +
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = TRUE
+  ELSE IF (Asc(mdlGlobal.char) = 58) OR (Asc(mdlGlobal.char) = 60) OR (Asc(mdlGlobal.char) = 62) OR (Asc(mdlGlobal.char) = 63) OR (Asc(mdlGlobal.char) = 64) OR (Asc(mdlGlobal.char) = 94) OR (Asc(mdlGlobal.char) = 95) OR (Asc(mdlGlobal.char) = 126) OR (Asc(mdlGlobal.char) = 123) OR (Asc(mdlGlobal.char) = 124) OR (Asc(mdlGlobal.char) = 125) THEN ' huruf ! - +
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF     
   ELSE
     RETURN
   ENDIF
 
 checktype:
-  IF __correct_typing = TRUE THEN
+  IF mdlGlobal.correct_typing = TRUE THEN
     '// if correct typing then mark next letter with blue color
-    IF __pos <= Len(__text)
+    IF mdlGlobal.pos <= Len(mdlGlobal.text)
       WITH board__
-      .Select(__pos, 1)
+      .Select(mdlGlobal.pos, 1)
       .Format.Color = Color.Blue 
       .Format.Font.Underline = TRUE
       .Unselect
@@ -256,8 +248,8 @@ checktype:
     
     '// if error typing, mark old letter with gray colors
     WITH board__
-    .Select(__pos - 1, 1)
-    IF __stop_type = FALSE THEN 
+    .Select(mdlGlobal.pos - 1, 1)
+    IF mdlGlobal.stop_type = FALSE THEN 
       .Format.Color = &FF6600&
     ELSE 
       .Format.Color = Color.Gray
@@ -267,20 +259,20 @@ checktype:
     END WITH 
     
     '// go to next letter
-    __pos = __pos + 1
+    mdlGlobal.pos = mdlGlobal.pos + 1
     '__type_sound.Play(0)
     'info_char__.Foreground = &HFFFF00&
-   __stop_type = FALSE
+   mdlGlobal.stop_type = FALSE
    
   ELSE     '// user type wrong letter :(
   
     '// if user press shift or capslock button don't record it as error :(
     IF Key.Code = 4128 THEN  'key shift
-      __stop_type = __stop_type
+      mdlGlobal.stop_type = mdlGlobal.stop_type
       RETURN
     ENDIF
     IF Key.Code = 4132 THEN  'key capslock
-      __stop_type = __stop_type
+      mdlGlobal.stop_type = mdlGlobal.stop_type
       'capslock_info
       RETURN 
     ENDIF 
@@ -292,8 +284,8 @@ checktype:
     '   ENDIF 
     ' ENDIF
     
-    __pos = __pos
-    __stop_type = TRUE
+    mdlGlobal.pos = mdlGlobal.pos
+    mdlGlobal.stop_type = TRUE
     
     '// don't show error information in tutorial mode
     IF __mode_typoo = 0 THEN 
@@ -303,37 +295,37 @@ checktype:
     '// show some error info with red color
     'info_char__.Foreground = Color.Red
     WITH board__
-    .Select(__pos - 1, 1)
+    .Select(mdlGlobal.pos - 1, 1)
     .Format.Color = Color.Red 
     .Format.Font.Underline = TRUE
     .Unselect    
     END WITH 
   ENDIF 
 
-  IF __pos <= Len(__text) THEN 
-    __char = Mid(__text, __pos, 1)
-      map_virtual_keyboard(__char)
+  IF mdlGlobal.pos <= Len(mdlGlobal.text) THEN 
+    mdlGlobal.char = Mid(mdlGlobal.text, mdlGlobal.pos, 1)
+      map_virtual_keyboard(mdlGlobal.char)
   ELSE 
     IF __mode_typoo = 1 THEN 
       stop_tutor___Click
     ELSE 
       '// in tutorial mode, go to next tutorial
-      IF tuts_number < 15 THEN 
-        tuts_number = tuts_number + 1
+      IF mdlGlobal.tuts_number < 15 THEN 
+        mdlGlobal.tuts_number = mdlGlobal.tuts_number + 1
       ELSE 
-        tuts_number = 1
+        mdlGlobal.tuts_number = 1
       ENDIF 
-      load_basic_tutorial(tuts_number)
-      board__.Text = __text
+      load_basic_tutorial(mdlGlobal.tuts_number)
+      board__.Text = mdlGlobal.text
       Board_Init
       Board_First_Char
-      IF (tuts_number > 1) AND (tuts_number < 2) THEN 
+      IF (mdlGlobal.tuts_number > 1) AND (mdlGlobal.tuts_number < 2) THEN 
         prev_tutor__.Enabled = TRUE
         next_tutor__.Enabled = TRUE
-      ELSE IF (tuts_number <= 2) THEN 
+      ELSE IF (mdlGlobal.tuts_number <= 2) THEN 
         prev_tutor__.Enabled = FALSE
         next_tutor__.Enabled = TRUE
-      ELSE IF (tuts_number = 2) THEN 
+      ELSE IF (mdlGlobal.tuts_number = 2) THEN 
         next_tutor__.Enabled = FALSE
         prev_tutor__.Enabled = TRUE
       ENDIF 
@@ -342,7 +334,7 @@ checktype:
 END
 
 PUBLIC SUB Board_Init()
-  __pos = 1
+  mdlGlobal.pos = 1
 '   __type_count = 0
 '   __error = 0
   
@@ -352,7 +344,7 @@ PUBLIC SUB Board_Init()
   .Format.Font.Underline = FALSE
   .Format.Alignment = Align.Justify
   .Refresh
-  .Select(__pos - 1, 1)
+  .Select(mdlGlobal.pos - 1, 1)
   .Format.Color = Color.Blue
   .Format.Font.Underline = TRUE
   .Unselect
@@ -361,34 +353,34 @@ PUBLIC SUB Board_Init()
 END
 
 PUBLIC SUB Board_First_Char()
-  __char = Mid(__text, __pos, 1)
-  map_virtual_keyboard(__char)
+  mdlGlobal.char = Mid(mdlGlobal.text, mdlGlobal.pos, 1)
+  map_virtual_keyboard(mdlGlobal.char)
 END
 
 PUBLIC SUB prev_tutor___Click()
-  IF tuts_number = 2 THEN prev_tutor__.Enabled = FALSE
-  IF tuts_number < 2 THEN 
-    tuts_number = 1
+  IF mdlGlobal.tuts_number = 2 THEN prev_tutor__.Enabled = FALSE
+  IF mdlGlobal.tuts_number < 2 THEN 
+    mdlGlobal.tuts_number = 1
   ELSE 
-    tuts_number = tuts_number - 1
+    mdlGlobal.tuts_number = mdlGlobal.tuts_number - 1
     next_tutor__.Enabled = TRUE
   ENDIF 
-  load_basic_tutorial(tuts_number)
-  board__.Text = __text
+  load_basic_tutorial(mdlGlobal.tuts_number)
+  board__.Text = mdlGlobal.text
   Board_Init
   Board_First_Char
 END
 
 PUBLIC SUB next_tutor___Click()
-  IF tuts_number = 14 THEN next_tutor__.Enabled = FALSE
-  IF tuts_number > 15 THEN 
-    tuts_number = 15
+  IF mdlGlobal.tuts_number = 14 THEN next_tutor__.Enabled = FALSE
+  IF mdlGlobal.tuts_number > 15 THEN 
+    mdlGlobal.tuts_number = 15
   ELSE 
-    tuts_number = tuts_number + 1
+    mdlGlobal.tuts_number = mdlGlobal.tuts_number + 1
     prev_tutor__.Enabled = TRUE
   ENDIF 
-  load_basic_tutorial(tuts_number)
-  board__.Text = __text
+  load_basic_tutorial(mdlGlobal.tuts_number)
+  board__.Text = mdlGlobal.text
   Board_Init
   Board_First_Char
 END
@@ -397,37 +389,37 @@ PUBLIC SUB load_basic_tutorial(tuts AS Integer)
 
   SELECT CASE tuts
     CASE 1
-      __text = "aaa aaa aaa sss sss sss ddd ddd ddd ass ass ass add add add asd asd asd das das das ssd ssd ssd dad dad dad"
+      mdlGlobal.text = "aaa aaa aaa sss sss sss ddd ddd ddd ass ass ass add add add asd asd asd das das das ssd ssd ssd dad dad dad"
     CASE 2
-      __text = "fff fff fff aff aff aff afs afs afs fas fas fas daf daf daf asf asf asf fss fss fss dff dff dff fad fad fad"
+      mdlGlobal.text = "fff fff fff aff aff aff afs afs afs fas fas fas daf daf daf asf asf asf fss fss fss dff dff dff fad fad fad"
     CASE 3
-      __text = ";;; ;;; ;;; lll lll lll kkk kkk kkk ;ll ;ll ;ll ;kk ;kk ;kk lkk lkk lkk ;lk ;lk ;lk ;kl ;kl ;kl kl; kl; kl;" 
+      mdlGlobal.text = ";;; ;;; ;;; lll lll lll kkk kkk kkk ;ll ;ll ;ll ;kk ;kk ;kk lkk lkk lkk ;lk ;lk ;lk ;kl ;kl ;kl kl; kl; kl;" 
     CASE 4
-      __text = "jjj jjj jjj ;jj ;jj ;jj ;jk ;jk ;jk lkj lkj lkj jkl jkl jkl ;lj ;lj ;lj klj klj klj l;j l;j l;j k;j k;j k;j" 
+      mdlGlobal.text = "jjj jjj jjj ;jj ;jj ;jj ;jk ;jk ;jk lkj lkj lkj jkl jkl jkl ;lj ;lj ;lj klj klj klj l;j l;j l;j k;j k;j k;j" 
     CASE 5
-      __text = "asdf asdf asdf ;lkj ;lkj ;lkj as al ad ak af aj fa ka da la sa ja sl sd sk sf ls ds ks fs lf dk dl fl kl dd ss ff ll" 
+      mdlGlobal.text = "asdf asdf asdf ;lkj ;lkj ;lkj as al ad ak af aj fa ka da la sa ja sl sd sk sf ls ds ks fs lf dk dl fl kl dd ss ff ll" 
     CASE 6
-      __text = "aqaz aqaz aqaz aqaz swsx swsx swsx dedc dedc dedc dedc frfv frfv frfv aqaz aqaz aqaz aqaz swsx swsx swsx dedc dedc dedc dedc frfv frfv frfv" 
+      mdlGlobal.text = "aqaz aqaz aqaz aqaz swsx swsx swsx dedc dedc dedc dedc frfv frfv frfv aqaz aqaz aqaz aqaz swsx swsx swsx dedc dedc dedc dedc frfv frfv frfv" 
     CASE 7
-      __text = "jujm jujm jujm jujm kik, kik, kik, kik, lol. lol. lol. lol. ;p;/ ;p;/ ;p;/ ;p;/ jujm jujm jujm jujm kik, kik, kik, kik, lol. lol. lol. lol. ;p;/ ;p;/ ;p;/ ;p;/" 
+      mdlGlobal.text = "jujm jujm jujm jujm kik, kik, kik, kik, lol. lol. lol. lol. ;p;/ ;p;/ ;p;/ ;p;/ jujm jujm jujm jujm kik, kik, kik, kik, lol. lol. lol. lol. ;p;/ ;p;/ ;p;/ ;p;/" 
     CASE 8
-      __text = "gtgb gtgb gtgb gtgb hyhn hyhn hyhn hyhn gtgb gtgb gtgb gtgb hyhn hyhn hyhn hyhn" 
+      mdlGlobal.text = "gtgb gtgb gtgb gtgb hyhn hyhn hyhn hyhn gtgb gtgb gtgb gtgb hyhn hyhn hyhn hyhn" 
     CASE 9
-      __text = "aqaz swsx dedc frfv gtgb ;p;/ lol. kik, jujm hyhn aqaz swsx dedc frfv gtgb ;p;/ lol. kik, jujm hyhn" 
+      mdlGlobal.text = "aqaz swsx dedc frfv gtgb ;p;/ lol. kik, jujm hyhn aqaz swsx dedc frfv gtgb ;p;/ lol. kik, jujm hyhn" 
     CASE 10
-      __text = "abcd efgh ijkl mnop qrst uvwx yzab abcd efgh ijkl mnop qrst uvwx yzab"
+      mdlGlobal.text = "abcd efgh ijkl mnop qrst uvwx yzab abcd efgh ijkl mnop qrst uvwx yzab"
     CASE 11
-      __text = "as al ad ak af aj fa ka da la sa ja sl sd sk sf ls ds ks fs de le ae ke se je fe ed el ea ek es ej ef ed lf dk dl fl kl ki ai li si di ji fi ia il is ik id ij if dd ee ss ff ll ei"
+      mdlGlobal.text = "as al ad ak af aj fa ka da la sa ja sl sd sk sf ls ds ks fs de le ae ke se je fe ed el ea ek es ej ef ed lf dk dl fl kl ki ai li si di ji fi ia il is ik id ij if dd ee ss ff ll ei"
     CASE 12
-      __text = "as os es us is an on en un in at ot et ut it ad od ed ud id sa so se su si na no ne nu ni ta to te tu ti ha ho he hu hi da do de du di au st oi sh oi ts ht oe nk ou nd ue ns ui th"
+      mdlGlobal.text = "as os es us is an on en un in at ot et ut it ad od ed ud id sa so se su si na no ne nu ni ta to te tu ti ha ho he hu hi da do de du di au st oi sh oi ts ht oe nk ou nd ue ns ui th"
     CASE 13
-      __text = "ag ac ar al ap at ay af ug uc ur ul up ut eg ec er el ep et ey ef og or ol op ot of ig ic ir il ip if ga ca ra la pa fa gu cu ru lu pu fu ge ce re le pe ye fe go co ro lo po yo fo gi ci ri li fi gn pl gh ld sy rd ty ct ft ch nc dy dr ph ng"
+      mdlGlobal.text = "ag ac ar al ap at ay af ug uc ur ul up ut eg ec er el ep et ey ef og or ol op ot of ig ic ir il ip if ga ca ra la pa fa gu cu ru lu pu fu ge ce re le pe ye fe go co ro lo po yo fo gi ci ri li fi gn pl gh ld sy rd ty ct ft ch nc dy dr ph ng"
     CASE 14
-      __text = "am aw av az ak ax ab um ub em ew ev ez ek eq ex om ow ov oz ok ob im iv iz ix ib ma wa va za ka ja xa ba mu ju qu bu me we ve ze ke je xe be mo wo vo zo ko jo bo mi wi vi zi ki xi bi xt sm sk sw kn ms nk wh tw ks wn dv"
+      mdlGlobal.text = "am aw av az ak ax ab um ub em ew ev ez ek eq ex om ow ov oz ok ob im iv iz ix ib ma wa va za ka ja xa ba mu ju qu bu me we ve ze ke je xe be mo wo vo zo ko jo bo mi wi vi zi ki xi bi xt sm sk sw kn ms nk wh tw ks wn dv"
     CASE 15
-      __text = "ad ar an al am ab ee st ed er en el es em ex om on or un up id ic ir in im se sy le ly re ry ec fy ty de be my by bi di"
+      mdlGlobal.text = "ad ar an al am ab ee st ed er en el es em ex om on or un up id ic ir in im se sy le ly re ry ec fy ty de be my by bi di"
   END SELECT 
-  __text = Trim(__text)  
+  mdlGlobal.text = Trim(mdlGlobal.text)  
   
 END
 
@@ -1163,18 +1155,19 @@ END
 PUBLIC SUB open_tutor___Click()
   DIM texttemp AS String
   
-  __text = ""
+  mdlGlobal.text = ""
   texttemp = ""
   Dialog.Title = "Pilih berkas latihan..."
   Dialog.Filter = ["*", "Text File"]
-  Dialog.Path = User.home 
+  Dialog.Path = mdlGlobal.last_open_dir
   IF Dialog.OpenFile(FALSE) THEN RETURN
-  __text = Trim((File.Load(Dialog.Path)))
-  texttemp = __text
-  __text = Replace(__text, "<", "&#60 ")
-  __text = Replace(__text, ">", "&#62 ")
-  board__.Text = __text
-  __text = texttemp
+  mdlGlobal.last_open_dir = mdlGlobal.DirPath(Dialog.Path)
+  mdlGlobal.text = Trim((File.Load(Dialog.Path)))
+  texttemp = mdlGlobal.text
+  mdlGlobal.text = Replace(mdlGlobal.text, "<", "&#60 ")
+  mdlGlobal.text = Replace(mdlGlobal.text, ">", "&#62 ")
+  board__.Text = mdlGlobal.text
+  mdlGlobal.text = texttemp
   texttemp = ""
 END
 
@@ -1183,6 +1176,7 @@ PUBLIC SUB Form_KeyPress()
 END
 
 PUBLIC SUB Form_Close()
+  SaveConfig
   FMain.Show
 END
 
@@ -1190,16 +1184,16 @@ PUBLIC SUB typoo_mode___Click()
 
   IF typoo_mode__.Value = TRUE
     __mode_typoo = 0
-    tuts_number = 1
-    load_basic_tutorial(tuts_number)
-    board__.Text = __text
+    mdlGlobal.tuts_number = 1
+    load_basic_tutorial(mdlGlobal.tuts_number)
+    board__.Text = mdlGlobal.text
     Board_Init
     Board_First_Char 
     default_button_state(0)
   ELSE  
     __mode_typoo = 1
-    __text = ""
-    board__.Text = __text
+    mdlGlobal.text = ""
+    board__.Text = mdlGlobal.text
     init_hand_caption
     init_virtual_hand
     init_virtualkeyboard_color
@@ -1210,4 +1204,19 @@ END
 
 PUBLIC SUB Form_Show()
   typoo_mode___Click
+END
+
+PRIVATE SUB LoadConfig()
+  
+  mdlGlobal.last_open_dir = Settings["Config/LastOpenDir", User.Home]
+  IF Exist(mdlGlobal.last_open_dir) = FALSE THEN
+    mdlGlobal.last_open_dir = User.Home
+  ENDIF 
+  
+END
+
+PRIVATE SUB SaveConfig()
+  
+  Settings["Config/LastOpenDir"] = mdlGlobal.last_open_dir
+  
 END
