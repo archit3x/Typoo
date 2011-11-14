@@ -42,7 +42,6 @@ PUBLIC SUB _new()
   type_here__.SetFocus
   typoo_mode__.Value = TRUE
   ME.Center
-  ME.Show
 END
 
 PUBLIC SUB Form_Activate()
@@ -145,8 +144,6 @@ PUBLIC SUB capslock_info()
 END
 
 PUBLIC SUB type_here___KeyPress()
-DIM i AS Integer
-
   'Case sensitive key code still not supported by Gambas
   IF __mode_typoo = 1 THEN 
     IF mdlGlobal.start_type = FALSE THEN 
