@@ -24,39 +24,22 @@
 ' GAMBAS Creator
 ' ---------------------------------------------------------------------------------------
 
-PUBLIC __text AS String         
-PUBLIC __start_type AS Boolean       
-PUBLIC __pos AS Integer
-PUBLIC __char AS String
 PUBLIC __error AS Integer
 PUBLIC __type_count AS Integer
 PUBLIC __time AS Integer
 PUBLIC __start_time AS Date
-PUBLIC __stop_type AS Boolean
 PUBLIC __red_alert AS Boolean
 PUBLIC __mulai_ngetik AS Boolean
-PUBLIC __correct_typing AS Boolean
-PUBLIC __is_capslock_on AS Boolean
-
-PUBLIC __mode_typoo AS Integer
-PUBLIC tuts_number AS Integer
-
-PUBLIC key_function AS String = "4100,4097,4096,4144,4145,4146,4147,4148,4149,4150,4151,4152,4153,4154,4155,4134,4104,4102,4112,4118,4103,4113,4119,4114,4115,4117,4116,4133,4129,4179,4131"
-PUBLIC func_array AS String[]
 
 PRIVATE CONST MaxRecentFiles AS Integer = 5
 PRIVATE RecentFiles AS NEW String[]
 PRIVATE RecentMenus AS NEW Object[]
 PRIVATE FirstLoad AS Boolean = FALSE
-PRIVATE __lastOpenDir AS String
 
 PUBLIC SUB _new()
-  
-  init_key_function
+  mdlGlobal.reset
   LoadConfig
   ME.Center
-  ME.Show
-  
 END
 
 PUBLIC SUB detect_capslock()
@@ -71,13 +54,13 @@ PUBLIC SUB detect_capslock()
   
   SELECT iKeyLocks
   CASE 0
-    __is_capslock_on = FALSE
+    mdlGlobal.is_capslock_on = FALSE
   CASE 1
-    __is_capslock_on = TRUE
+    mdlGlobal.is_capslock_on = TRUE
   CASE 2
-    __is_capslock_on = FALSE
+    mdlGlobal.is_capslock_on = FALSE
   CASE 3
-    __is_capslock_on = TRUE
+    mdlGlobal.is_capslock_on = TRUE
   END SELECT 
   
 END
@@ -95,37 +78,30 @@ END
 PUBLIC SUB capslock_info()
   'detect caps lock
   detect_capslock
-  IF __is_capslock_on = TRUE THEN 
+  IF mdlGlobal.is_capslock_on = TRUE THEN 
     caps_indicator(TRUE)
   ELSE 
     caps_indicator(FALSE)
   ENDIF 
 END
 
-PUBLIC SUB init_key_function()
-  func_array = Split(key_function, ",")
-END
-
 PUBLIC SUB type_here___KeyPress()
-  DIM i AS Integer
 
   'Case sensitive key code still not supported by Gambas
-  IF __start_type = FALSE THEN 
+  IF mdlGlobal.start_type = FALSE THEN 
     Message.Info("Silahkan klik tombol Mulai untuk memulai")
     STOP EVENT 
     RETURN 
   ENDIF 
   
   ' Block some key function
-  FOR i = 0 TO func_array.Max
-    IF func_array[i] = Str(Key.Code) THEN 
-      type_here__.SetFocus
-      STOP EVENT 
-      RETURN 
-    ENDIF 
-  NEXT   
+  IF mdlGlobal.func_array.Exist(Key.Code) THEN 
+    type_here__.SetFocus
+    STOP EVENT 
+    RETURN 
+  ENDIF 
   
-  IF __stop_type = FALSE THEN 
+  IF mdlGlobal.stop_type = FALSE THEN 
     IF Key.Code = Key.BackSpace THEN 
       STOP EVENT 
       RETURN 
@@ -134,92 +110,92 @@ PUBLIC SUB type_here___KeyPress()
 
   capslock_info
   
-  __char = Mid(__text, __pos, 1)
-  IF Asc(__char) >= 97 AND Asc(__char) <= 122 THEN     ' letter a - z
+  mdlGlobal.char = Mid(mdlGlobal.text, mdlGlobal.pos, 1)
+  IF Asc(mdlGlobal.char) >= 97 AND Asc(mdlGlobal.char) <= 122 THEN     ' letter a - z
     detect_capslock
-    IF __is_capslock_on = TRUE THEN 
-      __correct_typing = FALSE
+    IF mdlGlobal.is_capslock_on = TRUE THEN 
+      mdlGlobal.correct_typing = FALSE
       'RETURN
       GOTO checktype
     ENDIF 
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = FALSE
-    ELSE IF Key.Code = Key[__char] THEN 
-      __correct_typing = TRUE
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = FALSE
+    ELSE IF Key.Code = Key[mdlGlobal.char] THEN 
+      mdlGlobal.correct_typing = TRUE
     ELSE 
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF 
-  ELSE IF Asc(__char) >= 65 AND Asc(__char) <= 90 THEN ' letter A - Z
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
+  ELSE IF Asc(mdlGlobal.char) >= 65 AND Asc(mdlGlobal.char) <= 90 THEN ' letter A - Z
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
       detect_capslock
-      IF __is_capslock_on = FALSE THEN
-        __correct_typing = TRUE
+      IF mdlGlobal.is_capslock_on = FALSE THEN
+        mdlGlobal.correct_typing = TRUE
       ELSE 
-        __correct_typing = FALSE
+        mdlGlobal.correct_typing = FALSE
       ENDIF 
     ELSE
       detect_capslock
-      IF __is_capslock_on = TRUE THEN
-        IF (Key.Code) = Key[__char] THEN
-          __correct_typing = TRUE
+      IF mdlGlobal.is_capslock_on = TRUE THEN
+        IF (Key.Code) = Key[mdlGlobal.char] THEN
+          mdlGlobal.correct_typing = TRUE
         ELSE
-          __correct_typing = FALSE
+          mdlGlobal.correct_typing = FALSE
         ENDIF
       ELSE
-        __correct_typing = FALSE
+        mdlGlobal.correct_typing = FALSE
       ENDIF
     ENDIF
-  ELSE IF Asc(__char) >= 44 AND Asc(__char) <= 57 THEN     ' number 0 - 9 dan some character
-    IF (Key.Code) = Key[__char] THEN
-      __correct_typing = TRUE
+  ELSE IF Asc(mdlGlobal.char) >= 44 AND Asc(mdlGlobal.char) <= 57 THEN     ' number 0 - 9 dan some character
+    IF (Key.Code) = Key[mdlGlobal.char] THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF
-  ELSE IF (Asc(__char) = 32) OR (Asc(__char) = 39) OR (Asc(__char) = 59) OR (Asc(__char) = 61) OR (Asc(__char) = 91) OR (Asc(__char) = 92) OR (Asc(__char) = 93) OR (Asc(__char) = 96) THEN ' spasi 59 61 91 92 93 96 
-    IF (Key.Code) = Key[__char] THEN
-      __correct_typing = TRUE
+  ELSE IF (Asc(mdlGlobal.char) = 32) OR (Asc(mdlGlobal.char) = 39) OR (Asc(mdlGlobal.char) = 59) OR (Asc(mdlGlobal.char) = 61) OR (Asc(mdlGlobal.char) = 91) OR (Asc(mdlGlobal.char) = 92) OR (Asc(mdlGlobal.char) = 93) OR (Asc(mdlGlobal.char) = 96) THEN ' spasi 59 61 91 92 93 96 
+    IF (Key.Code) = Key[mdlGlobal.char] THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF
-  ELSE IF Asc(__char) >= 33 AND Asc(__char) <= 38 THEN ' huruf ! - +
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = TRUE
+  ELSE IF Asc(mdlGlobal.char) >= 33 AND Asc(mdlGlobal.char) <= 38 THEN ' huruf ! - +
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF   
-  ELSE IF Asc(__char) >= 40 AND Asc(__char) <= 43 THEN ' huruf ! - +
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = TRUE
+  ELSE IF Asc(mdlGlobal.char) >= 40 AND Asc(mdlGlobal.char) <= 43 THEN ' huruf ! - +
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF   
-  ELSE IF (Asc(__char) = 58) OR (Asc(__char) = 60) OR (Asc(__char) = 62) OR (Asc(__char) = 63) OR (Asc(__char) = 64) OR (Asc(__char) = 94) OR (Asc(__char) = 95) OR (Asc(__char) = 126) OR (Asc(__char) = 123) OR (Asc(__char) = 124) OR (Asc(__char) = 125) THEN ' huruf ! - +
-    IF Key.Code = Key[__char] AND IF Key.Shift THEN
-      __correct_typing = TRUE
+  ELSE IF (Asc(mdlGlobal.char) = 58) OR (Asc(mdlGlobal.char) = 60) OR (Asc(mdlGlobal.char) = 62) OR (Asc(mdlGlobal.char) = 63) OR (Asc(mdlGlobal.char) = 64) OR (Asc(mdlGlobal.char) = 94) OR (Asc(mdlGlobal.char) = 95) OR (Asc(mdlGlobal.char) = 126) OR (Asc(mdlGlobal.char) = 123) OR (Asc(mdlGlobal.char) = 124) OR (Asc(mdlGlobal.char) = 125) THEN ' huruf ! - +
+    IF Key.Code = Key[mdlGlobal.char] AND IF Key.Shift THEN
+      mdlGlobal.correct_typing = TRUE
     ELSE
-      __correct_typing = FALSE
+      mdlGlobal.correct_typing = FALSE
     ENDIF     
   ELSE
     RETURN
   ENDIF
 
 checktype:
-    IF __stop_type = TRUE THEN 
+    IF mdlGlobal.stop_type = TRUE THEN 
       IF Key.Code = Key.BackSpace THEN 
-        __stop_type = FALSE
+        mdlGlobal.stop_type = FALSE
         RETURN 
       ELSE 
-        __stop_type = TRUE
+        mdlGlobal.stop_type = TRUE
         STOP EVENT 
         RETURN 
       ENDIF 
     ENDIF 
 
-    IF __correct_typing = TRUE THEN
+    IF mdlGlobal.correct_typing = TRUE THEN
     '// if correct typing then mark next letter with blue color
-    IF __pos <= Len(__text)
+    IF mdlGlobal.pos <= Len(mdlGlobal.text)
       WITH board__
-      .Select(__pos, 1)
+      .Select(mdlGlobal.pos, 1)
       .Format.Color = Color.Blue 
       .Format.Font.Underline = TRUE
       .Unselect
@@ -228,7 +204,7 @@ checktype:
     
     '// if error typing, mark old letter with gray colors
     WITH board__
-    .Select(__pos - 1, 1)
+    .Select(mdlGlobal.pos - 1, 1)
     IF __red_alert = FALSE THEN 
       .Format.Color = &FF6600&
     ELSE 
@@ -239,38 +215,38 @@ checktype:
     END WITH 
     
     '// go to next letter
-    __pos = __pos + 1
+    mdlGlobal.pos = mdlGlobal.pos + 1
     __type_count = __type_count + 1
     info_char__.Foreground = &HFFFF00&
-    __stop_type = FALSE
+    mdlGlobal.stop_type = FALSE
    __red_alert = FALSE
   ELSE     '// user type wrong letter :(
   
     '// if user press shift or capslock button don't record it as error :(
     IF Key.Code = 4128 THEN  'key shift
-      __stop_type = __stop_type
+      mdlGlobal.stop_type = mdlGlobal.stop_type
       RETURN
     ENDIF
     IF Key.Code = 4132 THEN  'key capslock
-      __stop_type = __stop_type
+      mdlGlobal.stop_type = mdlGlobal.stop_type
       capslock_info
       RETURN 
     ENDIF 
     
     '// don't record again if user have error before
-    IF __stop_type = FALSE THEN
+    IF mdlGlobal.stop_type = FALSE THEN
       __error = __error + 1
     ENDIF
     
-    __pos = __pos
-    __stop_type = TRUE
+    mdlGlobal.pos = mdlGlobal.pos
+    mdlGlobal.stop_type = TRUE
     
     char_error__.Text = Format(__error, "#,##")
    
     '// show some error info with red color
     info_char__.Foreground = Color.Red
     WITH board__
-    .Select(__pos - 1, 1)
+    .Select(mdlGlobal.pos - 1, 1)
     .Format.Color = Color.Red 
     .Format.Font.Underline = TRUE
     .Unselect    
@@ -278,9 +254,9 @@ checktype:
     __red_alert = TRUE
   ENDIF 
   
-  IF __pos <= Len(__text) THEN 
+  IF mdlGlobal.pos <= Len(mdlGlobal.text) THEN 
     '// show detail information until no letter to type
-    info_char__.Text = Mid(__text, __pos, 1)
+    info_char__.Text = Mid(mdlGlobal.text, mdlGlobal.pos, 1)
   ELSE 
       stop_type___Click
   ENDIF 
@@ -310,7 +286,7 @@ PUBLIC SUB mn_open_Click()
 END
 
 PUBLIC SUB Board_Init()
-  __pos = 1
+  mdlGlobal.pos = 1
   __type_count = 0
   __error = 0
   
@@ -320,7 +296,7 @@ PUBLIC SUB Board_Init()
   .Format.Font.Underline = FALSE
   .Format.Alignment = Align.Justify
   .Refresh
-  .Select(__pos - 1, 1)
+  .Select(mdlGlobal.pos - 1, 1)
   .Format.Color = Color.Blue
   .Format.Font.Underline = TRUE
   .Unselect
@@ -329,9 +305,9 @@ PUBLIC SUB Board_Init()
 END
 
 PUBLIC SUB Board_First_Char()
-  __char = Mid(__text, __pos, 1)
+  mdlGlobal.char = Mid(mdlGlobal.text, mdlGlobal.pos, 1)
   char_error__.Caption = "0"
-  info_char__.Caption = __char
+  info_char__.Caption = mdlGlobal.char
   info_char__.ForeColor = &HFFFF00&
   speed__.Caption = "0"
 END
@@ -342,11 +318,12 @@ END
 
 PUBLIC SUB start_type___Click()
 
-  IF Len(__text) = 0 THEN 
+  IF Len(mdlGlobal.text) = 0 THEN 
     Message.Info("Silahkan buka berkas tutorial")
     RETURN 
   ENDIF 
-  __start_type = TRUE
+  
+  mdlGlobal.start_type = TRUE
   start_type__.Enabled = FALSE
   stop_type__.Enabled = TRUE
   mn_open.Enabled = FALSE
@@ -382,7 +359,7 @@ END
 
 PUBLIC SUB stop_type___Click()
 
-  __start_type = FALSE
+  mdlGlobal.start_type = FALSE
   start_type__.Enabled = TRUE
   stop_type__.Enabled = FALSE
   mn_open.Enabled = TRUE
@@ -390,7 +367,7 @@ PUBLIC SUB stop_type___Click()
   IF __type_count > 0 THEN 
     calculate_speed
     calculate_accuracy
-    IF Len(__text) = __type_count THEN 
+    IF Len(mdlGlobal.text) = __type_count THEN 
       Message.Info("Selesai")
     ELSE 
       Message.Warning("diakhiri oleh pengguna")
@@ -409,7 +386,7 @@ END
 PUBLIC SUB calculate_accuracy()
   DIM accuracy AS Integer
   
-  accuracy = ((__type_count - __error) / Len(__text)) * 100
+  accuracy = ((__type_count - __error) / Len(mdlGlobal.text)) * 100
   char_accuracy__.Caption = accuracy & " %"
 END
 
@@ -453,7 +430,7 @@ PRIVATE SUB OpenFileTutorial(OPTIONAL filePath AS String = "")
   DIM texttemp AS String
   DIM iIndex AS Integer
     
-  __text = ""
+  mdlGlobal.text = ""
   texttemp = ""
   iIndex = -1 ' not in recent files
   
@@ -468,11 +445,11 @@ PRIVATE SUB OpenFileTutorial(OPTIONAL filePath AS String = "")
     Dialog.Title = "Select tutorial file..."
     Dialog.Filter = ["*", "Text File"]
     
-    IF Exist(__lastOpenDir) = FALSE THEN
-      __lastOpenDir = User.Home
+    IF Exist(mdlGlobal.last_open_dir) = FALSE THEN
+      mdlGlobal.last_open_dir = User.Home
     ENDIF
     
-    Dialog.Path = __lastOpenDir
+    Dialog.Path = mdlGlobal.last_open_dir
     IF Dialog.OpenFile(FALSE) THEN
       RETURN
     ENDIF
@@ -505,15 +482,15 @@ PRIVATE SUB OpenFileTutorial(OPTIONAL filePath AS String = "")
     mn_recentFiles.Enabled = TRUE
   ENDIF
   
-  __lastOpenDir = DirPath(filePath)
-  __text = Trim((File.Load(filePath)))
-  texttemp = __text
-  __text = Replace(__text, "<", "&#60 ")
-  __text = Replace(__text, ">", "&#62 ")
-  board__.Text = __text
-  __text = texttemp
+  mdlGlobal.last_open_dir = mdlGlobal.DirPath(filePath)
+  mdlGlobal.text = Trim((File.Load(filePath)))
+  texttemp = mdlGlobal.text
+  mdlGlobal.text = Replace(mdlGlobal.text, "<", "&#60 ")
+  mdlGlobal.text = Replace(mdlGlobal.text, ">", "&#62 ")
+  board__.Text = mdlGlobal.text
+  mdlGlobal.text = texttemp
   texttemp = ""
-  char_count__.Text = Format(Len(__text), "#,##")
+  char_count__.Text = Format(Len(mdlGlobal.text), "#,##")
   
 END
 
@@ -523,8 +500,8 @@ PRIVATE SUB LoadConfig()
   DIM filePath AS String
   DIM i AS Integer
   
-  __lastOpenDir = Settings["Config/LastOpenDir", User.Home]
-  IF Exist(__lastOpenDir) = FALSE THEN __lastOpenDir = User.Home
+  mdlGlobal.last_open_dir = Settings["Config/LastOpenDir", User.Home]
+  IF Exist(mdlGlobal.last_open_dir) = FALSE THEN mdlGlobal.last_open_dir = User.Home
   
   FOR i = 1 TO MaxRecentFiles STEP 1
     filePath = Settings["RecentFiles/File" & i, ""]
@@ -557,23 +534,10 @@ END
 PRIVATE SUB SaveConfig()
   
   DIM i AS Integer
-  Settings["Config/LastOpenDir"] = __lastOpenDir
+  Settings["Config/LastOpenDir"] = mdlGlobal.last_open_dir
   FOR i = 1 TO RecentFiles.Count STEP 1
     Settings["RecentFiles/File" & i] = RecentFiles[i - 1]
   NEXT
-  
-END
-
-PRIVATE FUNCTION DirPath(OPTIONAL filePath AS String = "") AS String
-  
-  DIM filename AS String
-  DIM length AS Integer
-  DIM result AS String
-  
-  filename = File.Name(filePath)
-  length = RInStr(filePath, filename) - 1
-  result = Left(filePath, length)
-  RETURN result
   
 END
 

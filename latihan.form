@@ -6,7 +6,6 @@
   Text = ("Typoo - Mode Latihan")
   Icon = Picture["typoo-icon.png"]
   Border = Window.Fixed
-  Minimized = True
   { PictureBox1 PictureBox
     MoveScaled(8,50,61,25)
     Picture = Picture["images/tangan.png"]

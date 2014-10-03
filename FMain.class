@@ -30,7 +30,6 @@ PUBLIC mahir_ngetik AS String = " Pada mode ini anda akan disimulasikan seperti 
 PUBLIC SUB _new()
   mode_latihan___Click
   ME.Center
-  ME.Show
 END
 
 PUBLIC SUB mulai___Click()
